@@ -64,3 +64,6 @@ class BackgroundSlider(Component):
     def insertImage(self, imageLocation=None, position=0):
         if imageLocation:
             self.images.insert(position, imageLocation)
+
+    def xxx(self):
+        pass
