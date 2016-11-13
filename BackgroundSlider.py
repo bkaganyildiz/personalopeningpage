@@ -15,7 +15,7 @@ class BackgroundSlider(Component):
         return att
 
     def __getitem__(self, item):
-        getattr(self, item)
+        return getattr(self, item)
 
     def __setitem__(self, key, value):
         setattr(self, key, value)
@@ -35,5 +35,20 @@ class BackgroundSlider(Component):
     def __str__(self):
         return self.description()
 
-    def __init__(self, images=[]):
-        self.images = images
+    def __init__(self, images=None, changeInterval=0, currentIndex=0):
+        if images:
+            self.images = images
+            self.currentIndex = currentIndex
+            self.changeInterval = changeInterval
+
+    def addImage(self, imageLocation=None):
+        if imageLocation:
+            self.images.append(imageLocation)
+
+    def removeImage(self, imageLocation=None):
+        if imageLocation in self.images:
+            self.images.remove(imageLocation)
+
+    def insertImage(self, imageLocation=None, position=0):
+        if imageLocation:
+            self.images.insert(position, imageLocation)
