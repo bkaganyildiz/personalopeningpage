@@ -27,7 +27,12 @@ class PersonalInfo(Component):
         return att
 
     def execute(self):
-        pass
+        print("Profile picture of the user :" + self.profilePic)
+        print("Name of the user :" + self.name )
+        print("Connections of the user : " )
+        for i in self.connections :
+            print (i)
+        print("Biography of the user : " + self.bio)
     
     def __str__(self):
         return self.description()
@@ -55,7 +60,7 @@ class PersonalInfo(Component):
         except AttributeError :
             print ("Profile Picture is not setted try set profile picture first then change it")
     def addName(self, name=None):
-        if name:
+        if name :
             self.name = (name)
     
     def removeName(self, name=None):
@@ -71,7 +76,7 @@ class PersonalInfo(Component):
         except AttributeError :
             print ("Name is not setted try set name first then change it")
     def addBio(self, bio=None):
-        if name:
+        if bio:
             self.bio = (bio)
     
     def removeBio(self, bio=None):
@@ -106,5 +111,5 @@ class PersonalInfo(Component):
                         self.connections.remove(connection)
                         self.connections.append(newConnection)
         except AttributeError :
-            print ("Biography is not setted try set biography first then change it")
+            print ("Connections are not setted try set connection first then change it")
 
