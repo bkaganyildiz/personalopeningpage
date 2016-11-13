@@ -2,11 +2,11 @@ import abc
 
 class Component(object, metaclass=abc.ABCMeta):
     @abc.abstractclassmethod
-    def __str__(self):
+    def description(self):
         pass
 
     @abc.abstractclassmethod
-    def __dir__(self):
+    def attributes(self):
         pass
 
     @abc.abstractclassmethod
