@@ -112,4 +112,21 @@ class PersonalInfo(Component):
                         self.connections.append(newConnection)
         except AttributeError :
             print ("Connections are not setted try set connection first then change it")
-
+    def execute(self):
+        if (AttributeError) :
+            return "<div> </div>"
+        else :
+            return (" <div class=\"landing-pic-wrapper\"> <img src=self.profilePic alt=self.name class= \"img-circle\" id=\"landing-profile-pic\"> " +
+                    "</div>"+
+                    "<div class=\"col-sm-8\">"+
+                    "<div class=\"landing-wrapper-bio\">"+
+                    "<div class=\"landing-bio\">"+
+                    "<h1 class=\"me\">self.name</h1>"+
+                    "<p>self.bio</p>"+
+                    "</div>"+
+                    "<div class=\"social\">"+
+                    "<a href=self.connections[0]><span class=\"symbol\">circleemail</span></a>"+
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+                    )
