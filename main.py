@@ -7,9 +7,12 @@ from Application import Application
 
 app = Application()
 print(app.available())
+print(app.loaded())
 app.load("Register")
-app.load("Register")
-app.addInstance("Register", 0, 1)
+app.load("PageBackground")
+print(app.loaded())
+#app.load("Register")
+#app.addInstance("Register", 0, 1)
 
 #print(app.loaded())
 
