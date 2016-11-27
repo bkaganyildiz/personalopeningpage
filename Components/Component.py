@@ -2,7 +2,7 @@ import abc
 
 class Component(object, metaclass=abc.ABCMeta):
     @abc.abstractstaticmethod
-    def description():
+    def description(self):
         pass
 
     @abc.abstractclassmethod

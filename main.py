@@ -1,8 +1,9 @@
-from Components.BackgroundSlider import *
+from Components.PageBackground import *
 from user_imgs import *
 from Application import Application
 
-#a = BackgroundSlider(images=user_data['images'], changeInterval=user_data['interval'], currentIndex=user_data['current'])
+a = PageBackground(imagePath=user_data['images'][1])
+print(a.execute())
 
 #app = Application()
 #app.available()
