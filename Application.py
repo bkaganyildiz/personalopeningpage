@@ -72,4 +72,27 @@ class Application(object):
         pass
 
     def execute(self):
-        pass
+        with open("index.html","w") as html_file :
+            html_file.write("""
+                <!DOCTYPE html>
+                <html>
+                <head>
+                <title></title>
+                <style>
+                div { width: %f %; height:  %f %; float: left; }
+                </style>
+                </head>
+                <body background= "#000000" style="-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">""" % 100/self.maxRow , 100/self.maxCol)
+                    <div style="background-color: #0000FF;">
+                        <img src="/home/metin/Desktop/script/bg_3.jpg">
+                            </div>
+                                <div style="background-color: #0000FF;">
+                                    <img src="/home/metin/Desktop/script/bg_3.jpg">
+                                        </div>
+                                            <div style="background-color: #0000FF;">
+                                                <img src="/home/metin/Desktop/script/bg_3.jpg">
+                                                    </div>
+                                                        
+                                                        </body>
+                                                            </html>
+                                                                """)
