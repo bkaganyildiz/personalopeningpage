@@ -1,6 +1,3 @@
-import threading
-from time import sleep
-
 from Components.Component import *
 
 

@@ -2,11 +2,14 @@ from Components.PageBackground import *
 from user_imgs import *
 from Application import Application
 
-a = PageBackground(imagePath=user_data['images'][1])
-print(a.execute())
+#a = PageBackground(imagePath=user_data['images'][1])
+#print(a.execute())
 
-#app = Application()
-#app.available()
+app = Application()
+print(app.available())
+app.load("Register")
+app.load("Register")
+app.addInstance("Register", 0, 1)
 
 #print(app.loaded())
 
