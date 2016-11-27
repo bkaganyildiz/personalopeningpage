@@ -1,4 +1,4 @@
-from Components.Component import *
+from Component import *
 
 
 class PersonalInfo(Component):
@@ -26,13 +26,13 @@ class PersonalInfo(Component):
                 att.append((attribute, type(getattr(self, attribute)).__name__))
         return att
 
-    def execute(self):
-        print("Profile picture of the user :" + self.profilePic)
-        print("Name of the user :" + self.name )
-        print("Connections of the user : " )
-        for i in self.connections :
-            print (i)
-        print("Biography of the user : " + self.bio)
+#def execute(self):
+#       print("Profile picture of the user :" + self.profilePic)
+#       print("Name of the user :" + self.name )
+#       print("Connections of the user : " )
+#       for i in self.connections :
+#           print (i)
+#       print("Biography of the user : " + self.bio)
     
     def __str__(self):
         return self.description()
