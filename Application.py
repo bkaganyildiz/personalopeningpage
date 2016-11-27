@@ -11,7 +11,7 @@ class Application(object):
 
     def __init__(self):
         self.loadedComponents = {}
-        self.instances = {}
+        self.loaded_instances = {}
         self.maxRow = 1
         self.maxCol = 1
 
@@ -51,7 +51,7 @@ class Application(object):
             Application.instanceCounter += 1
 
             c = getattr(self.loadedComponents[componentname], componentname)()
-            self.instances[instanceId] = (c, x, y)
+            self.loaded_instances[instanceId] = (c, x, y)
 
             if x > self.maxRow - 1:
                 self.maxRow = x + 1
@@ -83,16 +83,9 @@ class Application(object):
                 </style>
                 </head>
                 <body background= "#000000" style="-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">""" % 100/self.maxRow , 100/self.maxCol)
-                    <div style="background-color: #0000FF;">
-                        <img src="/home/metin/Desktop/script/bg_3.jpg">
-                            </div>
-                                <div style="background-color: #0000FF;">
-                                    <img src="/home/metin/Desktop/script/bg_3.jpg">
-                                        </div>
-                                            <div style="background-color: #0000FF;">
-                                                <img src="/home/metin/Desktop/script/bg_3.jpg">
-                                                    </div>
-                                                        
-                                                        </body>
-                                                            </html>
-                                                                """)
+            for i in self.loaded_instances.keys() :
+                html_file.write(callMethod(i,"execute",None) )
+            html_file.write("""
+                </body>
+                </html>
+                """)
