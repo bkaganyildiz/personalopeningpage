@@ -6,11 +6,24 @@ from Application import Application
 #print(a.execute())
 
 app = Application()
-print(app.available())
-print(app.loaded())
+#print(app.available())
+#print(app.loaded())
 app.load("Register")
 app.load("PageBackground")
-print(app.loaded())
+app.load("PersonalInfo")
+#print(app.loaded())
+app.addInstance("PageBackground", 0, 0)
+app.addInstance("Register", 1, 0)
+app.addInstance("PersonalInfo", 2, 0)
+#print(app.instances())
+app.callMethod(1, "setBackground", "/home/metin/Desktop/script/bg_2.jpg")
+
+app.callMethod(3, "addProfilePic", "https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAS3AAAAJGU2MzI0ZjM5LTViMzUtNDJiOC05MWUzLWEyYWY5MDA4NjFlOA.jpg")
+app.callMethod(3, "addName", "Memiş Gençol")
+app.callMethod(3, "addBio", "Boş, Beleş Adamın Teki")
+app.callMethod(3, "addConnections", ["f", "k"])
+
+app.execute()
 #app.load("Register")
 #app.addInstance("Register", 0, 1)
 

@@ -44,4 +44,6 @@ class PageBackground(Component):
         self.imagePath = imagePath
 
     def printHTML(self):
-        return '''<body background="{}" style="-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">'''.format(self.imagePath)
+        return '''<div>
+        <p> page backgroudsaas </p>
+</div>'''

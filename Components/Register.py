@@ -53,16 +53,15 @@ class Register(Component):
         self.password = password
     
     def execute(self):
-        with open("index.html","w") as html_file :
-            html_file.write("""
-                <html>
+        return """
+                <div>
                 <h1>Sign Up for Free</h1>
+                <div>
                 <div class="field-wrap">
                 <label>
                 First Name<span class="req">*</span>
                 </label>
                 <input type=%s required autocomplete="off"/>
-                </div>
                 </div>
                 <div class="field-wrap">
                 <label>
@@ -71,6 +70,7 @@ class Register(Component):
                 <input type= %s required autocomplete="off"/>
                 </div>
                 </div>
+                <div>
                 <div class="field-wrap">
                 <label>
                 Email Address<span class="req">*</span>
@@ -83,12 +83,11 @@ class Register(Component):
                 </label>
                 <input type= %s required autocomplete="off"/>
                 </div>
-                
-                <button type="submit" class="button button-block"/>Get Started</button>
-                
-                </form>
-                
                 </div>
-                </html>
-                """ % (self.firstName , self.lastName ,self.mail,self.password))
-        return "Successful"
+                <div>
+                <button type="submit" class="button button-block"/>Get Started</button>
+                </div>
+                </form>
+
+                </div>
+                """ % (self.firstName , self.lastName ,self.mail,self.password)

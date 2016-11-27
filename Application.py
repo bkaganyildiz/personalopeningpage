@@ -51,7 +51,7 @@ class Application(object):
             Application.instanceCounter += 1
 
             c = getattr(self.loadedComponents[componentname], componentname)()
-            self.loaded_instances[instanceId] = (c, x, y)
+            self.loaded_instances[instanceId] = (c, componentname, x, y)
 
             if x > self.maxRow - 1:
                 self.maxRow = x + 1
@@ -63,13 +63,24 @@ class Application(object):
 
 
     def instances(self):
-        pass
+        ret = {}
 
-    def removeInstance(self):
-        pass
+        for key, value in self.loaded_instances.items():
+            ret[key] = (value[1], value[2], value[3])
 
-    def callMethod(self, id, methodname, params):
-        pass
+        return ret
+
+    def removeInstance(self, id):
+        del self.loaded_instances[id]
+
+    def callMethod(self, id, methodname, *params):
+        c = self.loaded_instances[id][0]
+        method = getattr(c, methodname)
+
+        if params == (None,):
+            return method()
+        else:
+            return method(*params)
 
     def execute(self):
         with open("index.html","w") as html_file :
@@ -79,12 +90,13 @@ class Application(object):
                 <head>
                 <title></title>
                 <style>
-                div { width: %f %; height:  %f %; float: left; }
+                div {{ width: {}%; height:  {}%; float: left; }}
                 </style>
                 </head>
-                <body background= "#000000" style="-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">""" % 100/self.maxRow , 100/self.maxCol)
+                <body background= "#000000" style="-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">""".format(100/self.maxRow, 100/self.maxCol))
             for i in self.loaded_instances.keys() :
-                html_file.write(callMethod(i,"execute",None) )
+                print(i)
+                html_file.write(self.callMethod(i,"execute",None) )
             html_file.write("""
                 </body>
                 </html>
