@@ -1,4 +1,5 @@
 from Components.Component import *
+from dominate.tags import *
 
 
 class PageBackground(Component):
@@ -44,6 +45,10 @@ class PageBackground(Component):
         self.imagePath = imagePath
 
     def printHTML(self):
-        return '''<div>
-        <p> page backgroudsaas </p>
-</div>'''
+        image = img()
+        image['src'] = self.imagePath
+        image['style'] = "width: 100%; height: auto; max-width: 100%;"
+
+        d = div(image)
+        d['background-color'] = "#000000"
+        return  d

@@ -1,8 +1,8 @@
-import imp
 import importlib
 import os
-import re
-import sys
+import imp
+from dominate import document
+from dominate.tags import *
 
 
 class Application(object):
@@ -83,21 +83,19 @@ class Application(object):
             return method(*params)
 
     def execute(self):
-        with open("index.html","w") as html_file :
-            html_file.write("""
-                <!DOCTYPE html>
-                <html>
-                <head>
-                <title></title>
-                <style>
-                div {{ width: {}%; height:  {}%; float: left; }}
-                </style>
-                </head>
-                <body background= "#000000" style="-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">""".format(100/self.maxRow, 100/self.maxCol))
-            for i in self.loaded_instances.keys() :
-                print(i)
-                html_file.write(self.callMethod(i,"execute",None) )
-            html_file.write("""
-                </body>
-                </html>
-                """)
+        with open("index.html", "w") as html_file:
+            d = document()
+            with d.head:
+                style(".grid{{ width: {}%; height: {}%; float: left; }}".format(100 / self.maxRow,
+                                                                                         100 / self.maxCol))
+
+            _body = body()
+            d.add(_body)
+
+
+            for i in self.loaded_instances.keys():
+                dom = self.callMethod(i, "execute", None)
+                dom['class'] = "grid"
+                _body.add(dom)
+
+            html_file.write(d.render())

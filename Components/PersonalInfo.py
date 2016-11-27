@@ -1,4 +1,5 @@
 from Components.Component import *
+from dominate.tags import *
 
 
 class PersonalInfo(Component):
@@ -115,8 +116,7 @@ class PersonalInfo(Component):
         except AttributeError :
             print ("Connections are not setted try set connection first then change it")
     def execute(self):
-            return """
-            <div>
-                <p>Personal Info
-                    </div>
-                """#.format(self.profilePic , self.name ,self.name,self.bio,self.connections[0])
+        d = div(
+            p("Personal Info")
+        )
+        return d

@@ -1,4 +1,5 @@
 from Components.Component import *
+from dominate.tags import *
 
 
 class Register(Component):
@@ -53,41 +54,12 @@ class Register(Component):
         self.password = password
     
     def execute(self):
-        return """
-                <div>
-                <h1>Sign Up for Free</h1>
-                <div>
-                <div class="field-wrap">
-                <label>
-                First Name<span class="req">*</span>
-                </label>
-                <input type=%s required autocomplete="off"/>
-                </div>
-                <div class="field-wrap">
-                <label>
-                Last Name<span class="req">*</span>
-                </label>
-                <input type= %s required autocomplete="off"/>
-                </div>
-                </div>
-                <div>
-                <div class="field-wrap">
-                <label>
-                Email Address<span class="req">*</span>
-                </label>
-                <input type= %s required autocomplete="off"/>
-                </div>
-                <div class="field-wrap">
-                <label>
-                Set A Password<span class="req">*</span>
-                </label>
-                <input type= %s required autocomplete="off"/>
-                </div>
-                </div>
-                <div>
-                <button type="submit" class="button button-block"/>Get Started</button>
-                </div>
-                </form>
-
-                </div>
-                """ % (self.firstName , self.lastName ,self.mail,self.password)
+        h = div(
+            h1("Sign Up For Free"),
+            div(label("First Name", span(), "*"), input(type=self.firstName, autocomplete="off")),
+            div(label("Last Name", span(), "*"), input(type=self.lastName, autocomplete="off")),
+            div(label("Email Address", span(), "*"), input(type=self.mail, autocomplete="off")),
+            div(label("Set A Password", span(), "*"), input(type=self.password, autocomplete="off")),
+            button("Get Started", type="Submit")
+        )
+        return h
