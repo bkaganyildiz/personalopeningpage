@@ -1,4 +1,4 @@
-from Component import *
+from Components.Component import *
 
 
 class PersonalInfo(Component):

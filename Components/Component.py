@@ -1,8 +1,8 @@
 import abc
 
 class Component(object, metaclass=abc.ABCMeta):
-    @abc.abstractclassmethod
-    def description(self):
+    @abc.abstractstaticmethod
+    def description():
         pass
 
     @abc.abstractclassmethod

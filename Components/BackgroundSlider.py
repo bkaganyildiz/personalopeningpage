@@ -1,9 +1,11 @@
-from Component import *
 import threading
 from time import sleep
 
+from Components.Component import *
+
+
 class BackgroundSlider(Component):
-    def description(self):
+    def description():
         return "A collection of background images which changes in a set time"
 
     def attributes(self):
@@ -31,18 +33,17 @@ class BackgroundSlider(Component):
         return att
 
     def execute(self):
-        print("Image locations are: {}, starting at index {} image will change in every {} second".format(self.images, self.currentIndex, self.changeInterval))
+        print("starting at index {} image will change in every {} second".format(self.currentIndex, self.changeInterval))
 
-        t = threading.Thread(target=self.hey)
-        t.start()
-        t.join()
+        slideThread = threading.Thread(target=self.slide)
+        slideThread.start()
+        slideThread.join()
 
-    def hey(self):
+    def slide(self):
         while(True):
-            sleep(self.changeInterval)
-            self.currentIndex = (self.currentIndex + 1) % len(self.images)
             print("Current BG image is: {}".format(self.images[self.currentIndex]))
-
+            self.currentIndex = (self.currentIndex + 1) % len(self.images)
+            sleep(self.changeInterval)
 
     def __str__(self):
         return self.description()
@@ -65,5 +66,8 @@ class BackgroundSlider(Component):
         if imageLocation:
             self.images.insert(position, imageLocation)
 
-    def xxx(self):
-        pass
+    def printHTML(self):
+        return '<body background="{}" style="-webkit-background-size: cover;\
+  -moz-background-size: cover;\
+  -o-background-size: cover;\
+  background-size: cover;">'.format(self.images[self.currentIndex])
