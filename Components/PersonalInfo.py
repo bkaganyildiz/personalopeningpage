@@ -115,27 +115,19 @@ class PersonalInfo(Component):
         except AttributeError :
             print ("Connections are not setted try set connection first then change it")
     def execute(self):
-        #if (AttributeError) :
-        #    return "<div> </div>"
-        #else :
-            with open("index.html","w") as html_file :
-                
-                html_file.write("""
-                        <html>
-                        <div class="landing-pic-wrapper">
-                        <img src= " %s " alt= %s class="img-circle" id="landing-profile-pic">
-                        </div>
-                        <div class="col-sm-8">
-                        <div class="landing-wrapper-bio">
-                        <div class="landing-bio">
-                        <h1 class="me">%s</h1>
-                        <p>%s</p>
-                        </div>
-                        <div class="social">
-                        <a href=%s><span class="symbol">circleemail</span></a>
-                        </div>
-                        </div>
-                        </div>
-                        </html>
-                    """ % (self.profilePic , self.name ,self.name,self.bio,self.connections[0]))
-            return ("Successful")
+            return("""
+                    <div class="landing-pic-wrapper">
+                    <img src= " %s " alt= %s class="img-circle" id="landing-profile-pic">
+                    </div>
+                    <div class="col-sm-8">
+                    <div class="landing-wrapper-bio">
+                    <div class="landing-bio">
+                    <h1 class="me">%s</h1>
+                    <p>%s</p>
+                    </div>
+                    <div class="social">
+                    <a href=%s><span class="symbol">circleemail</span></a>
+                    </div>
+                    </div>
+                    </div>
+                """ % (self.profilePic , self.name ,self.name,self.bio,self.connections[0]))
