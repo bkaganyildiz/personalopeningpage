@@ -56,7 +56,7 @@ class Application(object):
 
     def addInstance(self, componentname, x, y):
         if componentname in self.loadedComponents:
-            instanceId = Application.instanceCounter
+            instanceId = str(Application.instanceCounter)
             Application.instanceCounter += 1
 
             c = getattr(self.loadedComponents[componentname], componentname)()
@@ -68,7 +68,7 @@ class Application(object):
                 self.maxCol = y + 1
 
             return instanceId
-        return 0
+        raise Exception("Module Not Loaded")
 
 
     def instances(self):
