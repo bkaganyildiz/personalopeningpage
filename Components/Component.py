@@ -23,4 +23,4 @@ class Component(object, metaclass=abc.ABCMeta):
 
     @abc.abstractclassmethod
     def execute(self):
-        return "<html> </html>"
+        pass
