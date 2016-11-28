@@ -40,6 +40,8 @@ class PageBackground(Component):
         super().__init__()
         if imagePath:
             self.imagePath = imagePath
+        else:
+            self.imagePath = ""
 
     def setBackground(self, imagePath=None):
         self.imagePath = imagePath

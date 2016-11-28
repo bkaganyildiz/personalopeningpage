@@ -1,4 +1,5 @@
 import importlib
+import json
 import os
 import imp
 from dominate import document
@@ -40,10 +41,18 @@ class Application(object):
             self.loadedComponents[moduleName] = module
 
     def loadDesign(self, path):
-        pass
+        with open(path, "r") as load_file:
+            for line in load_file:
+                component = json.loads(line)
+                self.load(component[0])
+                self.addInstance(component[0], component[1], component[2])
 
     def saveDesign(self, path):
-        pass
+        with open(path, "w") as save_file:
+            for value in self.instances().values():
+                save_file.write(json.dumps(value) + "\n")
+
+
 
     def addInstance(self, componentname, x, y):
         if componentname in self.loadedComponents:
@@ -92,10 +101,23 @@ class Application(object):
             _body = body()
             d.add(_body)
 
+            doms = []
+            for i in range(0, self.maxRow):
+                dd = []
+                for j in range(0, self.maxCol):
+                    dd.append(div(cls="grid"))
+                doms.append(dd)
+
 
             for i in self.loaded_instances.keys():
-                dom = self.callMethod(i, "execute", None)
-                dom['class'] = "grid"
-                _body.add(dom)
+                r = self.loaded_instances[i][2]
+                c = self.loaded_instances[i][3]
 
+                doms[r][c] = self.callMethod(i, "execute", None)
+                doms[r][c]['class'] = "grid"
+
+
+            for i in range(0, self.maxRow):
+                for j in range(0, self.maxCol):
+                    _body.add(doms[i][j])
             html_file.write(d.render())
