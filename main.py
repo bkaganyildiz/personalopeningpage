@@ -4,7 +4,7 @@ from Application import Application
 
 #a = PageBackground(imagePath=user_data['images'][1])
 #print(a.execute())
-"""
+
 app = Application()
 #print(app.available())
 #print(app.loaded())
@@ -12,24 +12,26 @@ app.load("Register")
 app.load("PageBackground")
 app.load("PersonalInfo")
 #print(app.loaded())
-app.addInstance("PageBackground", 0, 0)
-app.addInstance("Register", 1, 0)
-app.addInstance("PersonalInfo", 2, 2)
+id_page = app.addInstance("PageBackground", 0, 0)
+id_page2 = app.addInstance("PageBackground", 0, 1)
+id_reg = app.addInstance("Register", 1, 0)
+id_per = app.addInstance("PersonalInfo", 2, 2)
 #print(app.instances())
-app.callMethod(1, "setBackground", "/home/metin/Desktop/script/bg_2.jpg")
+app.callMethod(id_page, "setBackground", user_data["images"][4])
+app.callMethod(id_page2, "setBackground", user_data["images"][2])
 
-app.callMethod(3, "addProfilePic", "https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAS3AAAAJGU2MzI0ZjM5LTViMzUtNDJiOC05MWUzLWEyYWY5MDA4NjFlOA.jpg")
-app.callMethod(3, "addName", "Memiş Gençol")
-app.callMethod(3, "addBio", "Boş, Beleş Adamın Teki")
-app.callMethod(3, "addConnections", ["f", "k"])
+app.callMethod(id_per, "addProfilePic", "https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAS3AAAAJGU2MzI0ZjM5LTViMzUtNDJiOC05MWUzLWEyYWY5MDA4NjFlOA.jpg")
+app.callMethod(id_per, "addName", "Memiş Gençol")
+app.callMethod(id_per, "addBio", "Boş, Beleş Adamın Teki")
+app.callMethod(id_per, "addConnections", ["f", "k"])
 
 app.execute()
 app.saveDesign("/home/metin/Desktop/xxx.txt")
-"""
 
-app2 = Application()
-app2.loadDesign("/home/metin/Desktop/xxx.txt")
-app2.execute()
+
+#app2 = Application()
+#app2.loadDesign("/home/metin/Desktop/xxx.txt")
+#app2.execute()
 #app.load("Register")
 #app.addInstance("Register", 0, 1)
 
