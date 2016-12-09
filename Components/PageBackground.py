@@ -53,4 +53,12 @@ class PageBackground(Component):
 
         d = div(image)
         d['background-color'] = "#000000"
-        return  d
+        return d
+
+        # If all else fails return to primitive methods
+        return """
+        <div background-color="#000000" class="grid">
+            <img src={} style="width: 100%; height: auto; max-width: 100%;">
+        </div>
+
+        """.format(self.imagePath)

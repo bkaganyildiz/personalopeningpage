@@ -63,3 +63,35 @@ class Register(Component):
             button("Get Started", type="Submit")
         )
         return h
+
+        # If all else fails return to primitive methods
+        return """
+        <div class="grid">
+          <h1>Sign Up For Free</h1>
+          <div>
+            <label>First Name
+              <span></span>*
+            </label>
+            <input autocomplete="off" type="{}">
+          </div>
+          <div>
+            <label>Last Name
+              <span></span>*
+            </label>
+            <input autocomplete="off" type="{}">
+          </div>
+          <div>
+            <label>Email Address
+              <span></span>*
+            </label>
+            <input autocomplete="off" type="{}">
+          </div>
+          <div>
+            <label>Set A Password
+              <span></span>*
+            </label>
+            <input autocomplete="off" type="{}">
+          </div>
+          <button type="Submit">Get Started</button>
+        </div>
+        """.format(self.firstName , self.lastName ,self.mail,self.password)

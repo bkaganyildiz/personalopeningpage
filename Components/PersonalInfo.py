@@ -38,7 +38,7 @@ class PersonalInfo(Component):
     def __str__(self):
         return self.description()
     
-    def __init__(self, profilePic=None, name= None , connections = None , bio=None):
+    def __init__(self, profilePic="", name= "" , connections = "" , bio=""):
         self.profilePic = profilePic
         self.name = name
         self.connections = connections
@@ -117,6 +117,29 @@ class PersonalInfo(Component):
             print ("Connections are not setted try set connection first then change it")
     def execute(self):
         d = div(
+            div(img(src=self.profilePic, alt=self.name)),
+            div(div(div(h1(str(self.name)), p(str(self.bio))))),
+            div(a("circlemail", href=self.connections)),
             p("Personal Info")
         )
         return d
+
+        # If all else fails return to primitive methods
+        return """
+        <div class="grid">
+          <div class="landing-pic-wrapper">
+            <img src= "{}" alt= {} class="img-circle" id="landing-profile-pic">
+          </div>
+          <div class="col-sm-8">
+            <div class="landing-wrapper-bio">
+              <div class="landing-bio">
+                <h1 class="me">{}</h1>
+                <p>{}</p>
+              </div>
+              <div class="social">
+                <a href={}><span class="symbol">circleemail</span></a>
+              </div>
+             </div>
+          </div>
+        </div>
+        """.format(self.profilePic , self.name ,self.name,self.bio,self.connections[0])

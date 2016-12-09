@@ -120,4 +120,41 @@ class Application(object):
             for i in range(0, self.maxRow):
                 for j in range(0, self.maxCol):
                     _body.add(doms[i][j])
+            print(d.render())
             html_file.write(d.render())
+
+        # If all else fails return to primitive methods
+"""
+        with open("index.html", "w") as html_file:
+            html_str = '''
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dominate</title>
+    <style>.grid{ width: {}%; height: {}%; float: left; }</style>
+  </head>
+  <body>
+'''.format(100 / self.maxRow, 100 / self.maxCol)
+
+            doms = []
+            for i in range(0, self.maxRow):
+                dd = []
+                for j in range(0, self.maxCol):
+                    dd.append("<div class='grid'>&nbsp;</div>")
+                doms.append(dd)
+
+            for i in self.loaded_instances.keys():
+                r = self.loaded_instances[i][2]
+                c = self.loaded_instances[i][3]
+
+                doms[r][c] = self.callMethod(i, "execute", None)
+
+
+            for i in range(0, self.maxRow):
+                for j in range(0, self.maxCol):
+                    html_str += doms[i][j]
+
+            html_str += '</body></html>'
+            html_file.write(html_str)
+            print(html_str)
+"""
