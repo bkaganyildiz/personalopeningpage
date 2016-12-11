@@ -3,54 +3,80 @@ from dominate.tags import *
 
 
 class Register(Component):
+    _description = "Register Page"
+    _attributes = [
+        ('firstName', 'string'),
+        ('lastName', 'string'),
+        ('mail', 'string'),
+        ('password', 'string')
+    ]
+    _methods = [
+        ('setFirstName', 'Set First Name'),
+        ('setLastName', 'Set Last Name'),
+        ('setMail', 'Set Mail Address'),
+        ('setPassword', 'Set Password'),
+
+        ('changeFirstName', 'Change First Name'),
+        ('changeLastName', 'Change Last Name'),
+        ('changeMail', 'Change Mail Address'),
+        ('changePassword', 'Change Password'),
+    ]
+
     def description(self):
-        return "A collection of personal informations like profile picture ,name , bio etc. "
-    
+        return self._description
+
     def attributes(self):
-        att = []
-        for attribute in dir(self):
-            if not callable(getattr(self, attribute)):
-                att.append((attribute, type(getattr(self, attribute)).__name__))
-        return att
-    
+        return self._attributes
+
     def __getitem__(self, item):
-        return getattr(self, item)
-    
+        for attribute in self._attributes:
+            if attribute[0] == item:
+                return getattr(self, item)
+
+        raise AttributeError(self.__class__.__name__ + " object has no attribute '" + item + "'")
+
     def __setitem__(self, key, value):
-        setattr(self, key, value)
-    
+        for attribute in self._attributes:
+            if attribute[0] == key:
+                setattr(self, key, value)
+                return
+
+        raise AttributeError(self.__class__.__name__ + " object has no attribute '" + key + "'")
+
     def methods(self):
-        att = []
-        
-        for attribute in dir(self):
-            if callable(getattr(self, attribute)):
-                att.append((attribute, type(getattr(self, attribute)).__name__))
-        return att
+        return self._methods
 
     def __str__(self):
         return self.description()
     
-    def __init__(self, firstName=None, lastName= None , mail = None , password=None):
+    def __init__(self, firstName="", lastName= "" , mail = "" , password=""):
         self.firstName = firstName
         self.lastName = lastName
         self.mail = mail
         self.password = password
     
-    def setFirstName(self,firstName=None) :
+    def setFirstName(self, firstName="") :
         self.firstName = firstName
-    def changeFirstName(self,firstName=None) :
+
+    def changeFirstName(self, firstName="") :
         self.firstName = firstName
-    def setLastName(self,lastName=None) :
+
+    def setLastName(self, lastName="") :
         self.lastName = lastName
-    def changeLastName(self,lastName = None) :
+
+    def changeLastName(self, lastName = "") :
         self.lastName = lastName
-    def setMail(self,mail=None) :
+
+    def setMail(self, mail="") :
         self.mail = mail
-    def changeMail(self,mail=None) :
+
+    def changeMail(self, mail="") :
         self.mail = mail
-    def setPassword(self,password=None) :
+
+    def setPassword(self, password="") :
         self.password = password
-    def changePassword(self,password=None) :
+
+    def changePassword(self, password="") :
         self.password = password
     
     def execute(self):
@@ -63,35 +89,3 @@ class Register(Component):
             button("Get Started", type="Submit")
         )
         return h
-
-        # If all else fails return to primitive methods
-        return """
-        <div class="grid">
-          <h1>Sign Up For Free</h1>
-          <div>
-            <label>First Name
-              <span></span>*
-            </label>
-            <input autocomplete="off" type="{}">
-          </div>
-          <div>
-            <label>Last Name
-              <span></span>*
-            </label>
-            <input autocomplete="off" type="{}">
-          </div>
-          <div>
-            <label>Email Address
-              <span></span>*
-            </label>
-            <input autocomplete="off" type="{}">
-          </div>
-          <div>
-            <label>Set A Password
-              <span></span>*
-            </label>
-            <input autocomplete="off" type="{}">
-          </div>
-          <button type="Submit">Get Started</button>
-        </div>
-        """.format(self.firstName , self.lastName ,self.mail,self.password)

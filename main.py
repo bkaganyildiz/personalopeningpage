@@ -1,3 +1,26 @@
+from Application import *
+
+app = Application()
+
+app.load('PageBackground')
+app.load('Register')
+app.load('PersonalInfo')
+
+c1 = app.addInstance('PageBackground', 0, 0)
+c2 = app.addInstance('Register', 0, 1)
+c3 = app.addInstance('PersonalInfo', 0, 2)
+c4 = app.addInstance('Register', 0, 0)
+
+#cl1 = app.loaded_instances[c1][0]
+cl2 = app.loaded_instances[c2][0]
+cl3 = app.loaded_instances[c3][0]
+
+cl3.addName('Metin Kapı')
+cl3.addBio('Yeeeeeeeeeeees!')
+
+app.execute()
+
+"""
 from Components.PageBackground import *
 from user_imgs import *
 from Application import Application
@@ -6,6 +29,7 @@ from Application import Application
 #print(a.execute())
 
 app = Application()
+
 #print(app.available())
 #print(app.loaded())
 app.load("Register")
@@ -45,3 +69,4 @@ app.saveDesign("/home/metin/Desktop/xxx.txt")
 
 #print(a.attributes())
 #print(a.methods())
+"""
