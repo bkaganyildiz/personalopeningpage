@@ -59,7 +59,16 @@ class Agent(Thread) :
                 except:
                     self.sock.send(MSG_FAIL)
             elif (c[0]=='callMethod') :
-                self.sock.send((str(self._app.callMethod(c[1],c[2],[int(x) for x in c[3:]]))+'\n').encode('UTF-8'))
+                try :
+                    if (c[2]=='description' or c[2] == 'attributes' or c[2] == 'methods' or c[2] == 'execute')
+                        self.sock.send((str(self._app.callMethod(int(c[1]),c[2]))+'\n').encode('UTF-8'))
+                    elif(c[2]=='getitem') :
+                        self.sock.send((str(self._app.callMethod(int(c[1]),c[2]))+'\n').encode('UTF-8'))
+                    elif(c[2] == 'setitem') :
+                        self._app.callMethod(int(c[1]),c[2],c[3])
+                        self.sock.send(MSG_SUCCESSFUL)
+                except :
+                    self.sock.send(MSG_FAIL)
             else :
                 self.sock.send((str(self._app.execute())+'\n').encode('UTF-8'))
             l = self.sock.recv(1024)
