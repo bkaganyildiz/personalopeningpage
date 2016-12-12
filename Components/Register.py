@@ -1,5 +1,6 @@
 from Components.Component import *
 from dominate.tags import *
+import json
 
 
 class Register(Component):
@@ -78,6 +79,32 @@ class Register(Component):
 
     def changePassword(self, password="") :
         self.password = password
+
+    def register(self):
+        try:
+            users_file = open("users.txt", "r+")
+            users_raw = users_file.read()
+        except IOError:
+            users_file = open("users.txt", "w")
+            users_raw = json.dumps({'users':[]})
+
+        users = json.loads(users_raw)
+
+        for user in users['users']:
+            if user['mail'] == self.mail:
+                users_file.close()
+                raise Exception('User exists')
+
+        user = {
+            'firstName' : self.firstName,
+            'lastName' : self.lastName,
+            'mail' : self.mail,
+            'password' : self.password,
+        }
+        users['users'].append(user)
+
+        users_file.write(json.dumps(users))
+        users_file.close()
     
     def execute(self):
         h = div(

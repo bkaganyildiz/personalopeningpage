@@ -43,8 +43,7 @@ class Agent(Thread) :
                     self.sock.send(MSG_FAIL)
             elif (c[0]=='addInstance') :
                 try :
-                    self._app.addInstance(c[1],int(c[2]),int(c[3]))
-                    self.sock.send(MSG_SUCCESSFUL)
+                    self.sock.send((self._app.addInstance(c[1],int(c[2]),int(c[3])) + "\n").encode("UTF-8"))
                 except:
                     self.sock.send(MSG_FAIL)
             elif (c[0]=='instances') :
@@ -60,17 +59,18 @@ class Agent(Thread) :
                     self.sock.send(MSG_FAIL)
             elif (c[0]=='callMethod') :
                 try :
-                    if (c[2]=='description' or c[2] == 'attributes' or c[2] == 'methods' or c[2] == 'execute')
-                        self.sock.send((str(self._app.callMethod(int(c[1]),c[2]))+'\n').encode('UTF-8'))
-                    elif(c[2]=='getitem') :
-                        self.sock.send((str(self._app.callMethod(int(c[1]),c[2]))+'\n').encode('UTF-8'))
-                    elif(c[2] == 'setitem') :
-                        self._app.callMethod(int(c[1]),c[2],c[3])
+
+                    returner = self._app.callMethod(c[1],c[2],*c[3:])
+                    if(returner == None) :
                         self.sock.send(MSG_SUCCESSFUL)
+                    else :
+                        self.sock.send((returner+'\n').encode('UTF-8'))
                 except :
                     self.sock.send(MSG_FAIL)
-            else :
+            elif (c[0] == 'execute') :
                 self.sock.send((str(self._app.execute())+'\n').encode('UTF-8'))
+            else:
+                self.sock.send(MSG_FAIL)
             l = self.sock.recv(1024)
 class CacheServ :
     def __init__(self,ipport) :
@@ -86,5 +86,5 @@ class CacheServ :
             a.start()
             conn , addr = self.sock.accept()
 if (__name__ == '__main__') :
-    serv = CacheServ(20002)
+    serv = CacheServ(20000)
     serv.start()

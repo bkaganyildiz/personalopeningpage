@@ -127,5 +127,5 @@ class Application(object):
             for i in range(0, self.maxRow):
                 for j in range(0, self.maxCol):
                     _body.add(doms[i][j])
-            print(d.render())
             html_file.write(d.render())
+            return (d.render())
