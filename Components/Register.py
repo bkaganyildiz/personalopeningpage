@@ -49,13 +49,13 @@ class Register(Component):
 
     def __str__(self):
         return self.description()
-    
+
     def __init__(self, firstName="", lastName= "" , mail = "" , password=""):
         self.firstName = firstName
         self.lastName = lastName
         self.mail = mail
         self.password = password
-    
+
     def setFirstName(self, firstName="") :
         self.firstName = firstName
 
@@ -105,7 +105,7 @@ class Register(Component):
 
         users_file.write(json.dumps(users))
         users_file.close()
-    
+
     def execute(self):
         h = div(
             h1("Sign Up For Free"),
