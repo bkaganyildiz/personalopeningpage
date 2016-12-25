@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django import forms
 from django.db import models
-from django.contrib.auth.models import (
+'''from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
 # Create your models here.
@@ -76,4 +76,4 @@ class MyUser(AbstractBaseUser):
     def is_staff(self):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
-        return self.is_admin
+        return self.is_admin '''
