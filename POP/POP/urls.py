@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^POPapp/', include('POPapp.urls')),
-    url(r'^login/',login_view , name = 'login' ) ,
+    url(r'^login/',login_view , name = 'login_view' ) ,
     url(r'^admin/', admin.site.urls),
 ]
 
