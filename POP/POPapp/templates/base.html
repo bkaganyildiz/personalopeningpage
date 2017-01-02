@@ -1,0 +1,19 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" type="text/css" href="http://www.halitalptekin.com/theme/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://www.halitalptekin.com/theme/css/custom.css"/>
+    <link rel="stylesheet" type="text/css" href="http://www.halitalptekin.com/theme/css/pygments.css"/>
+    <link rel="stylesheet" type="text/css" href="http://www.halitalptekin.com/theme/css/monosocialiconsfont.css"/>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+</head>
+<body background="{{ MEDIA_URL }}{{background}}" style="max-width: 100%; height: auto;">
+    {% block background %}{% endblock background %}
+    {% block personalInfo %}{% endblock personalInfo %}
+</body>
+</html>

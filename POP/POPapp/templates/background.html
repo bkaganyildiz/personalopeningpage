@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block background %}
+
+
+<div>
+    <form action="/{{ username }}/background" method="post" enctype="multipart/form-data">
+        <p>
+            <input id="image" type="file" class="" name="image">
+        </p>
+        <input type="submit" value="Submit" />
+    </form>
+</div>
+
+{% endblock background %}

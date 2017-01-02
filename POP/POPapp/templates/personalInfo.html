@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block personalInfo %}
+
+
+<div class="container">
+    <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+        <div class="jumbotron">
+            <div class="row">
+
+                <div class="col-sm-4">
+                    <div class="landing-pic-wrapper">
+                        <img src="{{ MEDIA_URL }}{{ person.image }}" alt="{{ person.name }}" class="img-circle" id="landing-profile-pic">
+                    </div>
+                </div>
+
+                <div class="col-sm-8">
+                    <div class="landing-wrapper-bio">
+                        <div class="landing-bio">
+                            <h1 class="me">{{ person.name }}</h1>
+                            <p>{{ person.info }}</p>
+                        </div>
+                        <div class="social">
+                            {% for connection in person.connections %}
+                                <a href ="{{ connection.url }}"><span class='symbol'>{{ connection.name }}</span>
+
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form action="/{{ user.username }}/edit" method="post" enctype="multipart/form-data">
+                <input type="submit" value="Edit Profile" />
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock personalInfo %}

@@ -22,10 +22,15 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    url(r'^POPapp/', include('POPapp.urls')),
-    url(r'^login/',login_view , name = 'login_view' ) ,
     url(r'^admin/', admin.site.urls),
+    url(r'^(?P<username>[\w.@+-]+)/', include('POPapp.urls')),
+    url(r'^login',login_view , name = 'login_view' ) ,
+    url(r'^register', register_view),
+
 ]
 
 if settings.DEBUG :
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
