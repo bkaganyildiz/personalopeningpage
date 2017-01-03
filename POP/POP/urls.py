@@ -22,9 +22,9 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
+    url(r'^$',login_view , name = 'login_view' ) ,
     url(r'^admin/', admin.site.urls),
     url(r'^(?P<username>[\w.@+-]+)/', include('POPapp.urls')),
-    url(r'^login',login_view , name = 'login_view' ) ,
     url(r'^register', register_view),
 
 ]

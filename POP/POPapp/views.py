@@ -15,7 +15,7 @@ def editProfile(request, username):
         pi = PersonalInfo.objects.get(user=user)
         pi.connections = Connection.objects.filter(user=user)
     except User.DoesNotExist:
-        return redirect("/login")
+        return redirect("/")
 
     context = {
         "person": pi,
@@ -31,7 +31,7 @@ def index(request, username):
         pi = PersonalInfo.objects.get(user=user)
         pi.connections = Connection.objects.filter(user=user)
     except User.DoesNotExist:
-        return redirect("/login")
+        return redirect("/")
     except :
         Background.objects.create(user=user,name="Default", url="http://www.intrawallpaper.com/static/images/518164-backgrounds.jpg")
         background = Background.objects.get(user=user)
@@ -62,7 +62,7 @@ def setBackground(request, username):
         user = User.objects.get(username=username)
         background = Background.objects.get(user=user)
     except User.DoesNotExist:
-        return redirect("/login")
+        return redirect("")
     except :
         background = Background.objects.create(user=user, url="no-image.png", name="no_image")
 
