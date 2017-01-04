@@ -37,4 +37,65 @@
     </div>
 </div>
 
+<div class="container">
+    <form action="/{{ user.username }}" method="POST">
+        <table>
+            <tr>
+                <td>
+                    <input type="submit" name="available" value="Available Components">
+                    {% for component in available %}
+
+                        <h1>{{ component }}</h1>
+
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="Hey" value="Loaded Components">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="Hey" value="Load Component">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="Hey" value="Load Design">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="Hey" value="Save Design">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="Hey" value="Add Instance">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="Hey" value="Instances">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="Hey" value="Remove Instance">
+                </td>
+            </tr>
+        </table>
+        
+        
+        
+        
+        
+        
+        
+        
+    </form>
+    
+</div>
+
 {% endblock personalInfo %}

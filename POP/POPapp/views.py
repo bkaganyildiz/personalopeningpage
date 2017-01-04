@@ -6,16 +6,20 @@ from .models import Background, PersonalInfo, Connection
 from .forms import BackgroundImageForm
 from django.views.decorators.csrf import csrf_exempt
 from .choices import *
+from Application.Application import *
 
 
 @csrf_exempt
 def editProfile(request, username):
     try:
+        
         user = User.objects.get(username=username)
         pi = PersonalInfo.objects.get(user=user)
         pi.connections = Connection.objects.filter(user=user)
     except User.DoesNotExist:
         return redirect("/")
+
+
 
     context = {
         "person": pi,
@@ -25,23 +29,27 @@ def editProfile(request, username):
 
 
 def index(request, username):
-    try:
+    if request.session.has_key('username') : 
+        print(request.session)
+        username = request.session['username']
         user = User.objects.get(username=username)
-        background = Background.objects.get(user=user)
+        try : 
+            background = Background.objects.get(user=user)
+        except : 
+            pass
         pi = PersonalInfo.objects.get(user=user)
         pi.connections = Connection.objects.filter(user=user)
-    except User.DoesNotExist:
-        return redirect("/")
-    except :
-        Background.objects.create(user=user,name="Default", url="http://www.intrawallpaper.com/static/images/518164-backgrounds.jpg")
-        background = Background.objects.get(user=user)
-
-    context = {
-        "background" : background.image,
-        "person" : pi,
-        "user" : user,
-    }
-    return render(request, "POPapp/templates/personalInfo.html", context)
+        app = Application()
+        print("HEY", app.available())
+        context = {
+            "person" : pi,
+            "user" : user,
+            "available": app.available(),
+        }
+        return render(request, "POPapp/templates/personalInfo.html", context)
+    else : 
+        print (request.session.has_key('username'))
+        return redirect ("/")
 # Create your views here.
 
 @csrf_exempt
