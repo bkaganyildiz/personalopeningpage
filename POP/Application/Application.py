@@ -4,6 +4,7 @@ import os
 import imp
 from dominate import document
 from dominate.tags import *
+import copy
 
 
 class Application(object):
@@ -15,6 +16,29 @@ class Application(object):
         self.loaded_instances = {}
         self.maxRow = 1
         self.maxCol = 1
+
+    def __getstate__(self):
+        dump_loaded_instances = []
+        for key, value in self.loaded_instances.items():
+            dump_loaded_instances.append((key, value[1], value[2], value[3]))
+
+        dump_loadedComponents = []
+        for key, value in self.loadedComponents.items():
+            dump_loadedComponents.append(value.__name__)
+        print dump_loadedComponents
+        return (self.maxRow, self.maxCol, dump_loadedComponents, dump_loaded_instances)
+
+    def __setstate__(self, state):
+        self.maxRow, self.maxCol, dump_loadedComponents, dump_loaded_instances =  state
+
+        self.loadedComponents = {}
+        self.loaded_instances = {}
+        for key in dump_loadedComponents:
+            self.load(key)
+
+        print("AAAAAAAAAAAAAA:", dump_loaded_instances)
+        for instance in list(dump_loaded_instances):
+            self.addInstance(instance[1],instance[2],instance[3])
 
     def available(self):
         components = []
@@ -34,6 +58,7 @@ class Application(object):
             loadedMods[moduleName] = description
 
         return  loadedMods
+
 
     def load(self, moduleName):
         if moduleName not in self.loadedComponents:

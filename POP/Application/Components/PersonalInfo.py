@@ -1,8 +1,7 @@
-from Components.Component import *
 from dominate.tags import *
 
 
-class PersonalInfo(Component):
+class PersonalInfo(object):
     _description = "A collection of personal information like profile picture, name, bio etc."
     _attributes = [
         ('profilePic', 'string'),
@@ -58,10 +57,10 @@ class PersonalInfo(Component):
 #       for i in self.connections :
 #           print (i)
 #       print("Biography of the user : " + self.bio)
-    
+
     def __str__(self):
         return self.description()
-    
+
     def __init__(self, profilePic="", name= "", connections=None, bio=""):
         self.profilePic = profilePic
         self.name = name
@@ -91,7 +90,7 @@ class PersonalInfo(Component):
     def addName(self, name=None):
         if name :
             self.name = name
-    
+
     def removeName(self):
         try :
             if self.name :
@@ -109,7 +108,7 @@ class PersonalInfo(Component):
     def addBio(self, bio=None):
         if bio:
             self.bio = bio
-    
+
     def removeBio(self):
         try :
             if self.bio :
@@ -127,7 +126,7 @@ class PersonalInfo(Component):
     def addConnections(self, connections=None):
         if connections:
             self.connections = connections
-    
+
     def removeConnection(self, connection):
         try :
             if connection in self.connections :

@@ -1,8 +1,7 @@
-from Components.Component import *
 from dominate.tags import *
 
 
-class PageBackground(Component):
+class PageBackground(object):
     _description = "Sets the background of a page"
     _attributes = [('imagePath', 'string')]
     _methods = [('setBackground', 'Set imagePath to a value')]
@@ -38,7 +37,6 @@ class PageBackground(Component):
         return self.description()
 
     def __init__(self, imagePath=""):
-        super().__init__()
         self.imagePath = imagePath
 
     def setBackground(self, imagePath=None):

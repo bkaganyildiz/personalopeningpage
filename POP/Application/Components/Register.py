@@ -1,9 +1,8 @@
-from Components.Component import *
 from dominate.tags import *
 import json
 
 
-class Register(Component):
+class Register(object):
     _description = "Register Page"
     _attributes = [
         ('firstName', 'string'),
