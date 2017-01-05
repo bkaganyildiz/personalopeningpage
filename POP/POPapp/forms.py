@@ -24,5 +24,3 @@ class CallMethodForm(forms.Form) :
     mid = forms.CharField(required=True)
     method = forms.CharField(widget=forms.Textarea,required=True)
     param0 = forms.CharField(required=False)
-    param1 = forms.CharField(required=False)
-    param2 = forms.CharField(required=False)

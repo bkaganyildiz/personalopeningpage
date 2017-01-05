@@ -18,9 +18,9 @@ class Application(object):
         self.maxCol = 1
 
     def __getstate__(self):
-        dump_loaded_instances = []
+        dump_loaded_instances = {}
         for key, value in self.loaded_instances.items():
-            dump_loaded_instances.append((key, value[1], value[2], value[3]))
+            dump_loaded_instances[key] = (value[1], value[2], value[3])
 
         dump_loadedComponents = []
         for key, value in self.loadedComponents.items():
@@ -37,8 +37,8 @@ class Application(object):
             self.load(key)
 
         print("AAAAAAAAAAAAAA:", dump_loaded_instances)
-        for instance in list(dump_loaded_instances):
-            self.addInstance(instance[1],instance[2],instance[3])
+        for key, instance in dump_loaded_instances.items():
+            self.addInstance(instance[0],instance[1],instance[2], id=key)
 
     def available(self):
         components = []
@@ -80,9 +80,12 @@ class Application(object):
 
 
 
-    def addInstance(self, componentname, x, y):
+    def addInstance(self, componentname, x, y, id=None):
         if componentname in self.loadedComponents:
-            instanceId = str(Application.instanceCounter)
+            if id:
+                instanceId = id
+            else:
+                instanceId = str(Application.instanceCounter)
             Application.instanceCounter += 1
 
             c = getattr(self.loadedComponents[componentname], componentname)()

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.conf import settings
 from django.contrib.auth.models import User
-from .models import Background, PersonalInfo, Connection
+from .models import Background, PersonalInfo, Connection ,ApplicationUser
 from .forms import BackgroundImageForm , AddInstanceForm, RemoveInstanceForm, LoadDesignForm , CallMethodForm
 from django.views.decorators.csrf import csrf_exempt
 from .choices import *
@@ -14,7 +14,6 @@ import os
 @csrf_exempt
 def editProfile(request, username):
     try:
-
         user = User.objects.get(username=username)
         pi = PersonalInfo.objects.get(user=user)
         pi.connections = Connection.objects.filter(user=user)
@@ -33,15 +32,16 @@ def editProfile(request, username):
 @csrf_exempt
 def index(request, username):
     if request.session.has_key('username') :
-        #del request.session['application']
-        if request.session.has_key('application'):
-            app = pickle.loads(request.session['application'])
-        else:
-            app = Application()
-            request.session['application'] = pickle.dumps(app)
-
         username = request.session['username']
         user = User.objects.get(username=username)
+
+        appUser = ApplicationUser.objects.get(user=user)
+        if not request.session.has_key('application'):
+            request.session['application'] = appUser.app
+
+        app = pickle.loads(request.session['application'])
+
+
         try :
             background = Background.objects.get(user=user)
         except :
@@ -90,11 +90,8 @@ def index(request, username):
             if form.is_valid() :
                 method = form.cleaned_data['method']
                 mid = form.cleaned_data['mid']
-                parameters = []
-                parameters.append(form.cleaned_data['param0'])
-                parameters.append(form.cleaned_data['param1'])
-                parameters.append(form.cleaned_data['param2'])
-                context['callMethod'] = app.callMethod(mid,method,*parameters)
+                param0 = form.cleaned_data['param0'].split(',')
+                context['callMethod'] = app.callMethod(mid,method,*param0)
         elif request.POST.has_key('execute') :
             app.execute()
             return render(request, "index2.html", context)
