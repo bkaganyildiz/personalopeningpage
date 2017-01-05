@@ -124,7 +124,8 @@ class Application(object):
             return method(*params)
 
     def execute(self):
-        with open("index.html", "w") as html_file:
+        print "asdasdasdhellow"
+        with open("templates/index2.html", "w") as html_file:
             d = document()
             with d.head:
                 meta(http_equiv='content-type', content='text/html; charset = utf-8')

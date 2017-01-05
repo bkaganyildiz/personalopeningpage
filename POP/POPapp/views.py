@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.contrib.auth.models import User
 from .models import Background, PersonalInfo, Connection
-from .forms import BackgroundImageForm , AddInstanceForm, RemoveInstanceForm, LoadDesignForm
+from .forms import BackgroundImageForm , AddInstanceForm, RemoveInstanceForm, LoadDesignForm , CallMethodForm
 from django.views.decorators.csrf import csrf_exempt
 from .choices import *
 from Application.Application import *
@@ -48,7 +48,6 @@ def index(request, username):
             pass
         pi = PersonalInfo.objects.get(user=user)
         pi.connections = Connection.objects.filter(user=user)
-        print("HEY", app.available())
         context = {
             "person" : pi,
             "user" : user,
@@ -86,6 +85,20 @@ def index(request, username):
             #save_path = settings.BASE_DIR
             app.saveDesign( "design.txt")
             context['des_url'] = settings.BASE_DIR + "/design.txt"
+        elif request.POST.has_key('call_method'):
+            form = CallMethodForm(request.POST or None)
+            if form.is_valid() :
+                method = form.cleaned_data['method']
+                mid = form.cleaned_data['mid']
+                parameters = []
+                parameters.append(form.cleaned_data['param0'])
+                parameters.append(form.cleaned_data['param1'])
+                parameters.append(form.cleaned_data['param2'])
+                context['callMethod'] = app.callMethod(mid,method,*parameters)
+        elif request.POST.has_key('execute') :
+            app.execute()
+            return render(request, "index2.html", context)
+
         context['available'] = app.available()
         if not app.loaded() :
             context['loaded'] = ' '
