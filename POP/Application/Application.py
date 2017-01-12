@@ -5,6 +5,7 @@ import imp
 from dominate import document
 from dominate.tags import *
 import copy
+import pickle
 
 
 class Application(object):
@@ -20,7 +21,7 @@ class Application(object):
     def __getstate__(self):
         dump_loaded_instances = {}
         for key, value in self.loaded_instances.items():
-            dump_loaded_instances[key] = (value[1], value[2], value[3])
+            dump_loaded_instances[key] = (value[1], value[2], value[3], pickle.dumps(value[0]))
 
         dump_loadedComponents = []
         for key, value in self.loadedComponents.items():
@@ -36,9 +37,10 @@ class Application(object):
         for key in dump_loadedComponents:
             self.load(key)
 
-        print("AAAAAAAAAAAAAA:", dump_loaded_instances)
         for key, instance in dump_loaded_instances.items():
-            self.addInstance(instance[0],instance[1],instance[2], id=key)
+            #self.addInstance(instance[0],instance[1],instance[2], id=key)
+
+            self.loaded_instances[key] = (pickle.loads(instance[3]), instance[0],instance[1],instance[2])
 
     def available(self):
         components = []
@@ -67,11 +69,15 @@ class Application(object):
             self.loadedComponents[moduleName] = module
 
     def loadDesign(self, path):
-        with open(path, "r") as load_file:
-            for line in load_file:
-                component = json.loads(line)
-                self.load(component[0])
-                self.addInstance(component[0], component[1], component[2])
+        try:
+            fp = open(path, "r")
+        except:
+            fp = path
+
+        for line in fp:
+            component = json.loads(line)
+            self.load(component[0])
+            self.addInstance(component[0], component[1], component[2])
 
     def saveDesign(self, path):
         with open(path, "w") as save_file:
@@ -149,6 +155,7 @@ class Application(object):
             for i in self.loaded_instances.keys():
                 r = self.loaded_instances[i][2]
                 c = self.loaded_instances[i][3]
+
 
                 doms[r][c] = self.callMethod(i, "execute", None)
                 doms[r][c]['class'] = "grid"
