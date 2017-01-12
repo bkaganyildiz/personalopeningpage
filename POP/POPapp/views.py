@@ -79,6 +79,9 @@ def index(request, username):
             form = LoadDesignForm(request.POST , request.FILES)
             if form.is_valid() :
                 loadFile = form.cleaned_data['loadFile']
+                print request.FILES
+                print request.POST
+                print loadFile
                 app.loadDesign(loadFile)
                 request.session['application'] = pickle.dumps(app)
         elif request.POST.has_key('save_des'):
@@ -92,6 +95,7 @@ def index(request, username):
                 mid = form.cleaned_data['mid']
                 param0 = form.cleaned_data['param0'].split(',')
                 context['callMethod'] = app.callMethod(mid,method,*param0)
+                request.session['application'] = pickle.dumps(app)
         elif request.POST.has_key('execute') :
             app.execute()
             return render(request, "index2.html", context)
