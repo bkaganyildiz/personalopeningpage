@@ -17,7 +17,7 @@ class PageBackground(object):
             if attribute[0] == item:
                 return getattr(self, item)
 
-        raise AttributeError(self.__class__.__name__ + " object has no attribute '" + item + "'")
+        raise AttributeError(self.__class__.__name__ + " object has no attribute '" + str(item) + "'")
 
     def __setitem__(self, key, value):
         for attribute in self._attributes:
@@ -39,12 +39,12 @@ class PageBackground(object):
     def __init__(self, imagePath=""):
         self.imagePath = imagePath
 
-    def setBackground(self, imagePath=None):
+    def setBackground(self, imagePath=""):
         self.imagePath = imagePath
 
     def printHTML(self):
-        image = img()
-        image['src'] = self.imagePath
+        image = img(src=self.imagePath)
+        #image['src'] = img(src=self.imagePath)"http://www.planwallpaper.com/static/images/518164-backgrounds.jpg"
         image['style'] = "width: 100%; height: auto; max-width: 100%;"
 
         d = div(image)
