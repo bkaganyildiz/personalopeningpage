@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.contrib.auth.models import User
 from .models import Background, PersonalInfo, Connection ,ApplicationUser
@@ -28,6 +28,30 @@ def editProfile(request, username):
     }
     return render(request, "POPapp/templates/personalInfo.html", context)
 
+
+@csrf_exempt
+def load_component(request, username):
+    if request.session.has_key('username') :
+        username = request.session['username']
+        user = User.objects.get(username=username)
+
+        appUser = ApplicationUser.objects.get(user=user)
+        if not request.session.has_key('application'):
+            request.session['application'] = appUser.app
+
+        app = pickle.loads(request.session['application'])
+
+        req = json.loads(request.body.decode('utf-8'))
+        app.load(req['componentName'])
+        appUser.app = pickle.dumps(app)
+        appUser.save()
+        request.session['application'] = appUser.app
+
+
+    return JsonResponse({
+        'status': 'True',
+        'loaded_components' : app.loaded(),
+    })
 
 @csrf_exempt
 def index(request, username):

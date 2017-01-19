@@ -3,85 +3,112 @@
 {% block index %}
 
 <div class="container">
-    <form action="/{{ user.username }}/" method="POST" enctype="multipart/form-data">
-        <table>
-            <tr>
-                <td>
-                    <input type="submit" name="available" value="Available Components">
-                    {% for component in available %}
+		<table>
+			<tr>
+				<td>
+					<input type="submit" name="available" value="Available Components">
+					{% for component in available %}
 
-                        <h1>{{ component }}</h1>
+						<h1>{{ component }}</h1>
 
-                    {% endfor %}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="submit" name="loaded" value="Loaded Components">
-                    {% for component in loaded %}
-                        <h1>{{ component }}</h1>
-                    {% endfor %}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="submit" name="load" value="Load Component">
-                    <select name="componentName">
-                    {% for component in available %}
-                        <option value="{{ component }}">{{ component }}</option>
-                    {% endfor %}
-                  </select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input id="image" type="file" class="" name="loadFile">
-                    <input type="submit" name="load_des" value="Load Design">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="submit" name="save_des" value="Save Design">
-                    <a href="{{des_url}}">{{des_url}}</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                      <input type="text" name="picker">
-                      <input type="text" name="x" >
-                      <input type="text" name="y" >
-                      <input type="submit" name="add_instance" value="Add Instance">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="submit" name="instances" value="Instances">
-                    {% for instance1,instance2  in instances.items %}
-                        <h1>{{instance1}} {{ instance2.0 }}   {{ instance2.1 }} {{ instance2.2 }}</h1>
-                    {% endfor %}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="text" name="instance_id">
-                    <input type="submit" name="remove_instance" value="Remove Instance">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="text" name="mid">
-                    <input type="text" name="method">
-                    <input type="text" name="param0">
-                    <input type="submit" name="call_method" value="Call Method">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="submit" name="execute" value="Execute">
-                </td>
-            </tr>
-        </table>
-    </form>
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" name="loaded" value="Loaded Components">
+					<div id="the_loaded">
+					{% for component in loaded %}
+						<h1>{{ component }}</h1>
+					{% endfor %}
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" id="loadcomponent" name="load" value="Load Component">
+					<select name="componentName" id="component_name">
+					{% for component in available %}
+						<option value="{{ component }}">{{ component }}</option>
+					{% endfor %}
+				  </select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input id="image" type="file" class="" name="loadFile">
+					<input type="submit" name="load_des" value="Load Design">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" name="save_des" value="Save Design">
+					<a href="{{des_url}}">{{des_url}}</a>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					  <input type="text" name="picker">
+					  <input type="text" name="x" >
+					  <input type="text" name="y" >
+					  <input type="submit" name="add_instance" value="Add Instance">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" name="instances" value="Instances">
+					{% for instance1,instance2  in instances.items %}
+						<h1>{{instance1}} {{ instance2.0 }}   {{ instance2.1 }} {{ instance2.2 }}</h1>
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="text" name="instance_id">
+					<input type="submit" name="remove_instance" value="Remove Instance">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="text" name="mid">
+					<input type="text" name="method">
+					<input type="text" name="param0">
+					<input type="submit" name="call_method" value="Call Method">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" name="execute" value="Execute">
+				</td>
+			</tr>
+		</table>
 </div>
 
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		$("#loadcomponent").click(function () {
+			jQuery.ajax({
+				type: "POST",
+				async: true,
+				url: '/{{ user.username }}/loadcomponent',
+				data:  JSON.stringify({ 'componentName': $('#component_name option:selected').text() }),
+				contentType: "application/json; charset=utf-8",
+				success: function (response) 
+						{
+							var components = response['loaded_components'];
+							$('#the_loaded').html('');
+							for (component in components) {
+								$("#the_loaded").append("<h1>"+ component + "</h1>");
+							}
+						},
+				error: function (err)
+				{ alert(err.responseText)}
+			});
+		});
+	});
+
+
+
+</script>
 {% endblock index %}
