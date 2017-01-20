@@ -2,7 +2,7 @@ from dominate.tags import *
 import json
 
 
-class Login(object):
+class Logout(object):
     _description = "Logout Page"
     _attributes = [
     ]

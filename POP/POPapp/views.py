@@ -10,6 +10,124 @@ from Application.Application import *
 import pickle
 import os
 
+@csrf_exempt
+def deleteSession(request, username):
+    del request.session['application']
+    user = User.objects.get(username=username)
+    ApplicationUser.objects.get(user=user).delete()
+    return redirect(index, username=username)
+
+
+@csrf_exempt
+def load_component(request, username):
+    if request.session.has_key('username') :
+        username = request.session['username']
+        user = User.objects.get(username=username)
+
+        appUser = ApplicationUser.objects.get(user=user)
+        if not request.session.has_key('application'):
+            request.session['application'] = appUser.app
+
+        app = pickle.loads(request.session['application'])
+        body = json.loads(request.body.decode('utf-8'))
+        
+    
+        app.load(body['componentName'])
+        
+     
+        appUser.app = pickle.dumps(app)
+        appUser.save()
+        request.session['application'] = appUser.app
+
+        return JsonResponse({
+            'status': True,
+            'loaded_components' : app.loaded(),
+        })
+    else:
+        return JsonResponse({
+            'status': False,
+        })
+
+
+@csrf_exempt
+def add_instance(request, username):
+    if request.session.has_key('username') :
+        username = request.session['username']
+        user = User.objects.get(username=username)
+
+        appUser = ApplicationUser.objects.get(user=user)
+        if not request.session.has_key('application'):
+            request.session['application'] = appUser.app
+
+        app = pickle.loads(request.session['application'])
+        body = json.loads(request.body.decode('utf-8'))
+        
+
+        app.addInstance(
+            body['componentName'], 
+            int(body['x']), 
+            int(body['y'])
+        )
+        
+       
+        appUser.app = pickle.dumps(app)
+        appUser.save()
+        request.session['application'] = appUser.app
+
+        return JsonResponse({
+            'status': True,
+            'loaded_instances' : app.instances(),
+        })
+    else:
+        return JsonResponse({
+            'status': False,
+        })
+
+
+@csrf_exempt
+def remove_instance(request, username):
+    if request.session.has_key('username') :
+        username = request.session['username']
+        user = User.objects.get(username=username)
+
+        appUser = ApplicationUser.objects.get(user=user)
+        if not request.session.has_key('application'):
+            request.session['application'] = appUser.app
+
+        app = pickle.loads(request.session['application'])
+        body = json.loads(request.body.decode('utf-8'))
+        
+
+        app.removeInstance(body['id'])
+        
+       
+        appUser.app = pickle.dumps(app)
+        appUser.save()
+        request.session['application'] = appUser.app
+
+        return JsonResponse({
+            'status': True,
+            'loaded_instances' : app.instances(),
+        })
+    else:
+        return JsonResponse({
+            'status': False,
+        })
+
+
+@csrf_exempt
+def execute(request, username):
+    if request.session.has_key('username') :
+        username = request.session['username']
+        user = User.objects.get(username=username)
+
+        appUser = ApplicationUser.objects.get(user=user)
+        if not request.session.has_key('application'):
+            request.session['application'] = appUser.app
+
+        app = pickle.loads(request.session['application'])
+        app.execute()
+        return render(request, "index2.html", {})
 
 @csrf_exempt
 def editProfile(request, username):
@@ -29,41 +147,42 @@ def editProfile(request, username):
     return render(request, "POPapp/templates/personalInfo.html", context)
 
 
-@csrf_exempt
-def load_component(request, username):
-    if request.session.has_key('username') :
-        username = request.session['username']
-        user = User.objects.get(username=username)
 
-        appUser = ApplicationUser.objects.get(user=user)
-        if not request.session.has_key('application'):
-            request.session['application'] = appUser.app
-
-        app = pickle.loads(request.session['application'])
-
-        req = json.loads(request.body.decode('utf-8'))
-        app.load(req['componentName'])
-        appUser.app = pickle.dumps(app)
-        appUser.save()
-        request.session['application'] = appUser.app
-
-
-    return JsonResponse({
-        'status': 'True',
-        'loaded_components' : app.loaded(),
-    })
 
 @csrf_exempt
 def index(request, username):
-    if request.session.has_key('username') :
+    if request.session.has_key('username'):
         username = request.session['username']
         user = User.objects.get(username=username)
 
-        appUser = ApplicationUser.objects.get(user=user)
-        if not request.session.has_key('application'):
+        try:
+            appUser = ApplicationUser.objects.get(user=user)
+            app = pickle.loads(appUser.app)
+            if not request.session.has_key('application'):
+                request.session['application'] = appUser.app
+
+        except ApplicationUser.DoesNotExist:
+            app = Application()
+            appUser = ApplicationUser.objects.create(user=user, app=pickle.dumps(app))
             request.session['application'] = appUser.app
 
-        app = pickle.loads(request.session['application'])
+        context = {
+            "user" : user,
+            'available' : app.available(),
+            'loaded' : app.loaded(),
+            'instances' : app.instances(),
+        }
+
+        return render(request, "POPapp/templates/index.html", context)
+
+        """
+        context['available'] = app.available()
+        if not app.loaded() :
+            context['loaded'] = ' '
+        else :
+            context['loaded'] = app.loaded()
+
+        context['instances'] = app.instances()
 
 
         try :
@@ -124,14 +243,8 @@ def index(request, username):
             app.execute()
             return render(request, "index2.html", context)
 
-        context['available'] = app.available()
-        if not app.loaded() :
-            context['loaded'] = ' '
-        else :
-            context['loaded'] = app.loaded()
-
-        context['instances'] = app.instances()
-        return render(request, "POPapp/templates/index.html", context)
+        
+        return render(request, "POPapp/templates/index.html", context)"""
     else :
         print (request.session.has_key('username'))
         return redirect ("/")

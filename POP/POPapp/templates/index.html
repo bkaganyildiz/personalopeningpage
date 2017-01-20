@@ -2,86 +2,156 @@
 
 {% block index %}
 
-<div class="container">
-		<table>
-			<tr>
-				<td>
-					<input type="submit" name="available" value="Available Components">
-					{% for component in available %}
-
-						<h1>{{ component }}</h1>
-
-					{% endfor %}
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="submit" name="loaded" value="Loaded Components">
-					<div id="the_loaded">
+<div id="mainContainer" class="container">
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="col-sm-12" style="border-style: solid; border-radius:10px; border-color:#0000ff;">
+				<h1 class="text-center">Components</h1>
+			</div>
+			<div class="col-sm-6">
+				<div class="col-sm-12" style="border-bottom: 2px solid #000000">
+					<h3 class="text-center">Available</h3>
+				</div>
+				{% for component in available %}
+				<li class="text-center">{{ component }}</li>
+				{% endfor %}
+			</div>
+			<div class="col-sm-6">
+				<div class="col-sm-12" style="border-bottom: 2px solid #000000">
+					<h3 class="text-center">Loaded</h3>
+				</div>
+				<div id="the_loaded">
 					{% for component in loaded %}
-						<h1>{{ component }}</h1>
+					<li class="text-center">{{ component }}</li>
 					{% endfor %}
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="submit" id="loadcomponent" name="load" value="Load Component">
-					<select name="componentName" id="component_name">
+				</div>
+			</div>
+			<div class="col-sm-12" align="right">
+				<div class="col-sm-6">
+					<button id="loadcomponent" name="load" class="btn btn-default rigth">Load Component</button>
+				</div>
+				<div class="col-sm-6">
+					<select id="component_name" name="componentName" class="form-control">
 					{% for component in available %}
 						<option value="{{ component }}">{{ component }}</option>
 					{% endfor %}
-				  </select>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input id="image" type="file" class="" name="loadFile">
-					<input type="submit" name="load_des" value="Load Design">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="submit" name="save_des" value="Save Design">
-					<a href="{{des_url}}">{{des_url}}</a>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					  <input type="text" name="picker">
-					  <input type="text" name="x" >
-					  <input type="text" name="y" >
-					  <input type="submit" name="add_instance" value="Add Instance">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="submit" name="instances" value="Instances">
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="col-sm-12" style="border-style: solid; border-radius:10px; border-color:#0000ff;">
+				<h1 class="text-center">Instances</h1>
+			</div>
+			<div class="col-sm-12" style="border-bottom: 2px solid #000000">
+				<h3 class="text-center">Loaded</h3>
+			</div>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Key</th>
+						<th>Component Name</th>
+						<th>X</th>
+						<th>Y</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody id="loaded_instances">
 					{% for instance1,instance2  in instances.items %}
-						<h1>{{instance1}} {{ instance2.0 }}   {{ instance2.1 }} {{ instance2.2 }}</h1>
+						<tr>
+							<td>{{ instance1   }}</td>
+							<td>{{ instance2.0 }}</td>
+							<td>{{ instance2.1 }}</td>
+							<td>{{ instance2.2 }}</td>
+							<td>
+								<button class="remove_instance" name="{{ instance1 }}">Delete</button>
+							</td>
+						</tr>
 					{% endfor %}
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="text" name="instance_id">
-					<input type="submit" name="remove_instance" value="Remove Instance">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="text" name="mid">
-					<input type="text" name="method">
-					<input type="text" name="param0">
-					<input type="submit" name="call_method" value="Call Method">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="submit" name="execute" value="Execute">
-				</td>
-			</tr>
-		</table>
+				</tbody>
+			</table>
+			<div class="col-sm-3"></div>
+			<div class="col-sm-6" style="background-color: #99AABB">
+				<table class="table">
+					<tr>
+						<td class="text-right">Component Name: </td>
+						<td>
+							<select id="inst_comp_name" name="componentName">
+							{% for component in available %}
+								<option value="{{ component }}">{{ component }}</option>
+							{% endfor %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td class="text-right">X: </td>
+						<td>
+							<input id="inst_x" type="text" name="x" class="form-control">
+						</td>
+					</tr>
+					<tr>
+						<td class="text-right">Y: </td>
+						<td>
+							<input id="inst_y" type="text" name="y" class="form-control">
+						</td>
+					</tr>
+					<tr>
+						<td align="center" colspan="2">
+							<button id="add_instance" class="btn btn-default">Add Instance</button>	
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="col-sm-3"></div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-sm-3">
+				<select id="cm_inst_keys" name="instance_keys" class="form-control">
+					{% for key in instances.keys %}
+					<option value="{{ key }}">{{ key }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="col-sm-3">
+			</div>
+			<div class="col-sm-3">
+			</div>
+			<div class="col-sm-3">
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-sm-4"></div>
+			<div class="col-sm-4">
+				<form action="/{{ user.username }}/execute" method="POST">
+					<button type="submit" class="btn btn-default btn-lg btn-block">Execute</button>
+				</form>
+			</div>
+			<div class="col-sm-4"></div>
+		</div>
+	</div>
+
+	<table>
+		<tr>
+			<td>
+				<input id="image" type="file" class="" name="loadFile">
+				<input type="submit" name="load_des" value="Load Design">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="submit" name="save_des" value="Save Design">
+				<a href="{{des_url}}">{{des_url}}</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="mid">
+				<input type="text" name="method">
+				<input type="text" name="param0">
+				<input type="submit" name="call_method" value="Call Method">
+			</td>
+		</tr>
+	</table>
 </div>
 
 <script type="text/javascript">
@@ -94,14 +164,74 @@
 				url: '/{{ user.username }}/loadcomponent',
 				data:  JSON.stringify({ 'componentName': $('#component_name option:selected').text() }),
 				contentType: "application/json; charset=utf-8",
-				success: function (response) 
-						{
-							var components = response['loaded_components'];
-							$('#the_loaded').html('');
-							for (component in components) {
-								$("#the_loaded").append("<h1>"+ component + "</h1>");
-							}
-						},
+				success: function (response) {
+					var components = response['loaded_components'];
+					$('#the_loaded').html('');
+					for (component in components) {
+						$("#the_loaded").append("<li class='text-center'>" + component + "</li>");
+					}
+				},
+				error: function (err){
+					alert(err.responseText)
+				}
+			});
+		});
+
+		$("#add_instance").click(function () {
+			jQuery.ajax({
+				type: "POST",
+				async: true,
+				url: '/{{ user.username }}/addinstance',
+				data:  JSON.stringify({
+					'componentName': $('#inst_comp_name option:selected').text(),
+					'x': $('#inst_x').val(),
+					'y': $('#inst_y').val(),
+				}),
+				contentType: "application/json; charset=utf-8",
+				success: function (response) {
+					var instances = response['loaded_instances'];
+					$('#loaded_instances').html('');
+					for (key in instances) {
+						$('#loaded_instances').append(
+							"<tr><td>" + key + 
+							"</td><td>" + instances[key][0] + 
+							"</td><td>" + instances[key][1] + 
+							"</td><td>" + instances[key][2] + 
+							"</td><td><button class='remove_instance' name='" + key + 
+							"'>Delete</button></td></tr>");
+					}
+					$('#cm_inst_keys').html('');
+					for(key in instances){
+						$('#cm_inst_keys').append("<option value='" + key + "'>" + key + "</option>");
+					}
+				},
+				error: function (err)
+				{ alert(err.responseText)}
+			});
+		});
+
+		$('#loaded_instances').on("click", ".remove_instance", function () {
+			jQuery.ajax({
+				type: "POST",
+				async: true,
+				url: '/{{ user.username }}/removeinstance',
+				data:  JSON.stringify({
+					'id': $(this).attr('name'),
+				}),
+				contentType: "application/json; charset=utf-8",
+				success: function (response) {
+					var instances = response['loaded_instances'];
+					$('#loaded_instances').html('');
+					for (instance in instances) {
+						$('#loaded_instances').append(
+							"<tr><td>" + instance + 
+							"</td><td>" + instances[instance][0] + 
+							"</td><td>" + instances[instance][1] + 
+							"</td><td>" + instances[instance][2] + 
+							"</td><td><button class='remove_instance' name='" + instance + 
+							"'>Delete</button></td></tr>");
+					}
+				},
 				error: function (err)
 				{ alert(err.responseText)}
 			});
