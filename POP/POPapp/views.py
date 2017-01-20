@@ -116,6 +116,41 @@ def remove_instance(request, username):
 
 
 @csrf_exempt
+def call_method(request, username):
+    if request.session.has_key('username') :
+        username = request.session['username']
+        user = User.objects.get(username=username)
+
+        appUser = ApplicationUser.objects.get(user=user)
+        if not request.session.has_key('application'):
+            request.session['application'] = appUser.app
+
+        app = pickle.loads(request.session['application'])
+        body = json.loads(request.body.decode('utf-8'))
+        
+
+        app.callMethod(
+            body['key'],
+            body['method'],
+            *body['args'].split(',')
+        )
+        
+       
+        appUser.app = pickle.dumps(app)
+        appUser.save()
+        request.session['application'] = appUser.app
+
+        return JsonResponse({
+            'status': True,
+            'loaded_instances' : app.instances(),
+        })
+    else:
+        return JsonResponse({
+            'status': False,
+        })
+
+
+@csrf_exempt
 def execute(request, username):
     if request.session.has_key('username') :
         username = request.session['username']
@@ -127,7 +162,7 @@ def execute(request, username):
 
         app = pickle.loads(request.session['application'])
         app.execute()
-        return render(request, "index2.html", {})
+        return render(request, "POPapp/templates/index2.html", {})
 
 @csrf_exempt
 def editProfile(request, username):
@@ -151,6 +186,7 @@ def editProfile(request, username):
 
 @csrf_exempt
 def index(request, username):
+    print "asdasdakwemkajskdjksadjs"
     if request.session.has_key('username'):
         username = request.session['username']
         user = User.objects.get(username=username)
@@ -172,6 +208,12 @@ def index(request, username):
             'loaded' : app.loaded(),
             'instances' : app.instances(),
         }
+
+        if request.method == 'POST' :
+            print "hello asdasda"
+            app.execute()
+            return render(request, "POPapp/templates/index2.html", context)
+
 
         return render(request, "POPapp/templates/index.html", context)
 

@@ -113,16 +113,19 @@
 				</select>
 			</div>
 			<div class="col-sm-3">
+				<input id="cm_method_name" type="text" name="method_name" class="form-control">
 			</div>
 			<div class="col-sm-3">
+				<input id="cm_method_args" type="text" name="method_args" class="form-control">
 			</div>
 			<div class="col-sm-3">
+				<button id="call_method" class="btn btn-default">Call Method</button>	
 			</div>
 		</div>
 		<div class="col-sm-12">
 			<div class="col-sm-4"></div>
 			<div class="col-sm-4">
-				<form action="/{{ user.username }}/execute" method="POST">
+				<form action="/{{ user.username }}" method="POST">
 					<button type="submit" class="btn btn-default btn-lg btn-block">Execute</button>
 				</form>
 			</div>
@@ -141,14 +144,6 @@
 			<td>
 				<input type="submit" name="save_des" value="Save Design">
 				<a href="{{des_url}}">{{des_url}}</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" name="mid">
-				<input type="text" name="method">
-				<input type="text" name="param0">
-				<input type="submit" name="call_method" value="Call Method">
 			</td>
 		</tr>
 	</table>
@@ -172,7 +167,7 @@
 					}
 				},
 				error: function (err){
-					alert(err.responseText)
+					alert(err.responseText);
 				}
 			});
 		});
@@ -205,8 +200,9 @@
 						$('#cm_inst_keys').append("<option value='" + key + "'>" + key + "</option>");
 					}
 				},
-				error: function (err)
-				{ alert(err.responseText)}
+				error: function (err){
+					alert(err.responseText);
+				}
 			});
 		});
 
@@ -231,9 +227,48 @@
 							"</td><td><button class='remove_instance' name='" + instance + 
 							"'>Delete</button></td></tr>");
 					}
+					$('#cm_inst_keys').html('');
+					for(key in instances){
+						$('#cm_inst_keys').append("<option value='" + key + "'>" + key + "</option>");
+					}
 				},
-				error: function (err)
-				{ alert(err.responseText)}
+				error: function (err){
+					alert(err.responseText);
+				}
+			});
+		});
+
+		$("#call_method").click(function () {
+			jQuery.ajax({
+				type: "POST",
+				async: true,
+				url: '/{{ user.username }}/callmethod',
+				data:  JSON.stringify({
+					'key': $('#cm_inst_keys option:selected').text(),
+					'method': $('#cm_method_name').val(),
+					'args': $('#cm_method_args').val(),
+				}),
+				contentType: "application/json; charset=utf-8",
+				success: function (response) {
+					/*var instances = response['loaded_instances'];
+					$('#loaded_instances').html('');
+					for (key in instances) {
+						$('#loaded_instances').append(
+							"<tr><td>" + key + 
+							"</td><td>" + instances[key][0] + 
+							"</td><td>" + instances[key][1] + 
+							"</td><td>" + instances[key][2] + 
+							"</td><td><button class='remove_instance' name='" + key + 
+							"'>Delete</button></td></tr>");
+					}
+					$('#cm_inst_keys').html('');
+					for(key in instances){
+						$('#cm_inst_keys').append("<option value='" + key + "'>" + key + "</option>");
+					}*/
+				},
+				error: function (err){
+					alert(err.responseText);
+				}
 			});
 		});
 	});
@@ -241,4 +276,5 @@
 
 
 </script>
+{% block content %} {%endblock content %}
 {% endblock index %}

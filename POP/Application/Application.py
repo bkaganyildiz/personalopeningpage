@@ -134,15 +134,11 @@ class Application(object):
 
     def execute(self):
         print "asdasdasdhellow"
-        with open("templates/index2.html", "w") as html_file:
-            d = document()
-            with d.head:
-                meta(http_equiv='content-type', content='text/html; charset = utf-8')
-                style(".grid{{ width: {}%; height: {}%; float: left; }}".format(100 / self.maxRow,
-                                                                                         100 / self.maxCol))
-
-            _body = body()
-            d.add(_body)
+        with open("POPapp/templates/index2.html", "w") as html_file:
+            html_file.write("{%" + ' extends '+'"index.html" '+  "%}\n")
+            html_file.write("{%" + " block content " + "%}\n")
+            
+            d = div()
 
             doms = []
             for i in range(0, self.maxRow):
@@ -163,6 +159,7 @@ class Application(object):
 
             for i in range(0, self.maxRow):
                 for j in range(0, self.maxCol):
-                    _body.add(doms[i][j])
+                    d.add(doms[i][j])
             html_file.write(d.render())
+            html_file.write("\n{%" + " endblock " + "%}")
             return (d.render())
