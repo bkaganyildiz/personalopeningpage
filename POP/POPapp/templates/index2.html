@@ -1,4 +1,4 @@
-{% extends "index.html" %}
+{% extends "POPapp/templates/index.html" %}
 {% block content %}
 <div>
   <div class="grid">
@@ -18,20 +18,86 @@
     </div>
     <p>Personal Info</p>
   </div>
-  <div background-color="#000000" class="grid">
-    <img src="http://www.planwallpaper.com/static/images/blackmoon-wallpaper-background.jpg" style="width: 100%; height: auto; max-width: 100%;">
+  <div class="grid"></div>
+  <div class="grid"></div>
+  <div class="grid">
+    <h1>POST</h1>
+    <div>
+      <textarea cols="50" id="post_content" rows="4"></textarea>
+      <button id="post_method" name="Post">POST</button>
+    </div>
+    <script>$('#post_method').click(function () {
+                jQuery.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: '/{{ user.username }}/postblog',
+                    data:  JSON.stringify({ 'key' : '3', 'content': $('#post_content').val()}),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (response) {
+                    alert(JSON.stringify(response));
+                        $('#blog_3').text(response['content']);
+                    },
+                    error: function (err){
+                        alert(err.responseText);
+                    }
+                });
+            });</script>
+  </div>
+  <div class="grid"></div>
+  <div class="grid">
+    <h1>BLOG</h1>
+    <table>
+      <tr>
+        <td></td>
+        <td>2017-01-21 15:10:59</td>
+        <tr>
+          <td>
+            <p id="blog_3"></p>
+          </td>
+        </tr>
+      </tr>
+    </table>
+  </div>
+  <div class="grid"></div>
+  <div class="grid"></div>
+  <div class="grid">
+    <h1>Foreign Exchange Rate</h1>
+    <table id="for_exc">
+      <thead>
+        <tr>
+          <th>USD</th>
+          <th>EUR</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="usd"></td>
+          <td id="eur"></td>
+        </tr>
+      </tbody>
+    </table>
+    <script>
+                $(document).ready(function fetch(){
+                    $.ajax({
+                        type: 'GET',
+                        async: true,
+                        url: 'http://api.fixer.io/latest?base=TRY',
+                        success: function(response){
+                            $('#for_exc #usd').text((1/response['rates']['USD']).toFixed(3)),
+                            $('#for_exc #eur').text((1/response['rates']['EUR']).toFixed(3)),
+                            setTimeout(fetch, 5000);
+                        },
+                        error: function(err){
+                            alert(err.responseText);
+                        }
+                    });
+                });
+            </script>
   </div>
   <div class="grid"></div>
   <div class="grid"></div>
   <div class="grid"></div>
   <div class="grid"></div>
   <div class="grid"></div>
-  <div class="grid"></div>
-  <div class="grid"></div>
-  <div class="grid"></div>
-  <div class="grid"></div>
-  <div class="grid"></div>
-  <div class="grid"></div>
-  <div class="grid"></div>
 </div>
-{% endblock %}
+{% endblock content %}

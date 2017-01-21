@@ -3,7 +3,7 @@ import json
 import datetime
 
 
-class Blog(object):
+class Post(object):
     _description = "Create blog posts "
     _attributes = [
         ('blog_id', 'string'),
@@ -55,6 +55,8 @@ class Blog(object):
 
     def setContent(self, content="") :
         self.content = content
+        print "Content: " , self.content
+        return self.content
 
     def changeContent(self, content="") :
         self.content = content
@@ -63,8 +65,26 @@ class Blog(object):
         h = div(
             h1("POST"),
             div(
-                id= "post_method"
-                tr(td(p(self.content))),
-                button(name="Post")
-            )))
+                textarea(
+                    id="post_content",
+                    rows=4, cols=50
+                ),
+                button("POST", name="Post", id="post_method"),
+            ),
+            script("""$('#post_method').click(function () {
+                jQuery.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: '/{{ user.username }}/postblog',
+                    data:  JSON.stringify({ 'key' : '""" + self.blog_id + """', 'content': $('#post_content').val()}),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (response) {
+                    alert(JSON.stringify(response));
+                        $('#blog_"""+self.blog_id+"""').text(response['content']);
+                    },
+                    error: function (err){
+                        alert(err.responseText);
+                    }
+                });
+            });"""))
         return h

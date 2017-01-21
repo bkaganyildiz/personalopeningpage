@@ -133,9 +133,8 @@ class Application(object):
             return method(*params)
 
     def execute(self):
-        print "asdasdasdhellow"
         with open("POPapp/templates/index2.html", "w") as html_file:
-            html_file.write("{%" + ' extends '+'"index.html" '+  "%}\n")
+            html_file.write("{%" + ' extends '+'"POPapp/templates/index.html" '+  "%}\n")
             html_file.write("{%" + " block content " + "%}\n")
             
             d = div()
@@ -161,5 +160,5 @@ class Application(object):
                 for j in range(0, self.maxCol):
                     d.add(doms[i][j])
             html_file.write(d.render())
-            html_file.write("\n{%" + " endblock " + "%}")
+            html_file.write("\n{%" + " endblock content " + "%}")
             return (d.render())

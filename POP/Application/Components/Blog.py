@@ -8,12 +8,13 @@ class Blog(object):
     _attributes = [
         ('date', 'datetime'),
         ('title', 'string'),
-        ('content', 'string')
+        ('content', 'string'),
+        ('id', 'string')
     ]
     _methods = [
         ('setContent', 'Set Content'),
         ('setTitle', 'Set Title'),
-
+        ('setId', 'Set ID'),
         ('changeContent', 'Change Content'),
         ('changeTitle', 'Change Title'),
     ]
@@ -54,6 +55,10 @@ class Blog(object):
         self.title = title
         self.date = datetime.datetime.now()
 
+    def setId(self, title="") :
+        self.id = title
+
+
     def changeTitle(self, title="") :
         self.title = title
         self.date = datetime.datetime.now()
@@ -61,6 +66,7 @@ class Blog(object):
     def setContent(self, content="") :
         self.content = content
         self.date = datetime.datetime.now()
+        return self.content
 
     def changeContent(self, content="") :
         self.content = content
@@ -71,6 +77,6 @@ class Blog(object):
             h1("BLOG"),
             table(
                 tr(td(self.title), td(self.date.strftime("%Y-%m-%d %H:%M:%S")),
-                tr(td(p(self.content)))
+                tr(td(p(self.content, id="blog_{}".format(self.id))))
             )))
         return h

@@ -181,12 +181,47 @@ def editProfile(request, username):
     }
     return render(request, "POPapp/templates/personalInfo.html", context)
 
+@csrf_exempt
+def postblog(request, username):
+    if request.session.has_key('username') :
+        username = request.session['username']
+        user = User.objects.get(username=username)
 
+        appUser = ApplicationUser.objects.get(user=user)
+        if not request.session.has_key('application'):
+            request.session['application'] = appUser.app
+
+        app = pickle.loads(request.session['application'])
+        body = json.loads(request.body.decode('utf-8'))
+
+        print "\n\n\n\n\n\n", body['key'], body['content']
+
+        content = app.callMethod(
+            body['key'],
+            'setContent',
+            body['content']
+        )
+
+        
+        print "\n\n\n\n\n", content 
+       
+        appUser.app = pickle.dumps(app)
+        appUser.save()
+        request.session['application'] = appUser.app
+
+        return JsonResponse({
+            'status': True,
+            'content' : content,
+        })
+    else:
+        return JsonResponse({
+            'status': False,
+        })
 
 
 @csrf_exempt
 def index(request, username):
-    print "asdasdakwemkajskdjksadjs"
+   
     if request.session.has_key('username'):
         username = request.session['username']
         user = User.objects.get(username=username)
@@ -214,7 +249,7 @@ def index(request, username):
             app.execute()
             return render(request, "POPapp/templates/index2.html", context)
 
-
+        print "asdasdakwemkajskdjksadjs"   
         return render(request, "POPapp/templates/index.html", context)
 
         """

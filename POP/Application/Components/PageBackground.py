@@ -47,6 +47,6 @@ class PageBackground(object):
         #image['src'] = img(src=self.imagePath)"http://www.planwallpaper.com/static/images/518164-backgrounds.jpg"
         image['style'] = "width: 100%; height: auto; max-width: 100%;"
 
-        d = div(image)
+        d = div(image )
         d['background-color'] = "#000000"
         return d
