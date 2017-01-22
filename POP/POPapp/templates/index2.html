@@ -1,6 +1,21 @@
 {% extends "POPapp/templates/index.html" %}
 {% block content %}
-<div class="row panel panel-default">
+<div class="row panel panel-default" style="margin:auto; width:90%;">
+  <div class="grid">
+    <h1>BLOG</h1>
+    <table>
+      <tr>
+        <td>1</td>
+        <td>2017-01-22 17:14:49</td>
+        <tr>
+          <td>
+            <p id="blog_1">merhaba ceren</p>
+          </td>
+        </tr>
+      </tr>
+    </table>
+  </div>
+  <div class="grid"></div>
   <div class="grid">
     <h1>POST</h1>
     <div>
@@ -15,7 +30,6 @@
                     data:  JSON.stringify({ 'key' : '1', 'content': $('#post_content').val()}),
                     contentType: 'application/json; charset=utf-8',
                     success: function (response) {
-                    alert(JSON.stringify(response));
                         $('#blog_1').text(response['content']);
                     },
                     error: function (err){
@@ -24,19 +38,64 @@
                 });
             });</script>
   </div>
-  <div class="grid">
-    <h1>BLOG</h1>
-    <table>
-      <tr>
-        <td></td>
-        <td>2017-01-22 14:23:32</td>
-        <tr>
-          <td>
-            <p id="blog_1"></p>
-          </td>
-        </tr>
-      </tr>
-    </table>
+  <div class="grid"></div>
+  <div background-color="#000000" class="grid">
+    <img src="https://static.pexels.com/photos/126590/pexels-photo-126590.jpeg" style="width: 100%; height: auto; max-width: 100%;">
   </div>
+  <div class="grid"></div>
+  <div align="center" class="grid" id="xkcd_3">
+    <h3 class="text-center">Trash</h3>
+    <img src="http://imgs.xkcd.com/comics/trash.png">
+    <div>
+      <div align="left" class="col-sm-6">
+        <button class="btn btn-default" id="xkcd_prev">Prev</button>
+      </div>
+      <div align="right" class="col-sm-6">
+        <button class="btn btn-default" id="xkcd_next">Next</button>
+      </div>
+    </div>
+    <script>
+                $(document).ready(function fetch(){
+                    var latestComic = 1786;
+                    var currentComic = 1786;
+                    $('#xkcd_prev').click(function () {
+                        jQuery.ajax({
+                            type: 'POST',
+                            async: true,
+                            data:  JSON.stringify({ 'key' : '3', 'num': currentComic-1}),
+                            contentType: 'application/json; charset=utf-8',
+                            url: '/{{ user.username }}/fetchcomic',
+                            success: function (response) {
+                                $('#xkcd_3 h3').text(response['comic']['title']);
+                                $('#xkcd_3 img').attr('src', response['comic']['img']);
+                                currentComic--;
+                            },
+                            error: function (err){
+                                alert(err.responseText);
+                            }
+                        });
+                    });
+                    $('#xkcd_next').click(function () {
+                        jQuery.ajax({
+                            type: 'POST',
+                            async: true,
+                            data:  JSON.stringify({ 'key' : '3', 'num': currentComic+1}),
+                            contentType: 'application/json; charset=utf-8',
+                            url: '/{{ user.username }}/fetchcomic',
+                            success: function (response) {
+                                $('#xkcd_3 h3').text(response['comic']['title']);
+                                $('#xkcd_3 img').attr('src', response['comic']['img']);
+                                currentComic++;
+                            },
+                            error: function (err){
+                                alert(err.responseText);
+                            }
+                        });
+                    });
+                });
+            </script>
+  </div>
+  <div class="grid"></div>
+  <div class="grid"></div>
 </div>
 {% endblock content %}

@@ -220,6 +220,39 @@ def postblog(request, username):
 
 
 @csrf_exempt
+def fetch_comic(request, username):
+    if request.session.has_key('username') :
+        username = request.session['username']
+        user = User.objects.get(username=username)
+
+        appUser = ApplicationUser.objects.get(user=user)
+        if not request.session.has_key('application'):
+            request.session['application'] = appUser.app
+
+        app = pickle.loads(request.session['application'])
+        body = json.loads(request.body.decode('utf-8'))
+
+        resp = app.callMethod(
+            body['key'],
+            'fetch_comic',
+            body['num']
+        )
+       
+        appUser.app = pickle.dumps(app)
+        appUser.save()
+        request.session['application'] = appUser.app
+
+        return JsonResponse({
+            'status': True,
+            'comic' : resp,
+        })
+    else:
+        return JsonResponse({
+            'status': False,
+        })
+
+
+@csrf_exempt
 def index(request, username):
    
     if request.session.has_key('username'):

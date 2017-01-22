@@ -56,7 +56,7 @@ class Application(object):
     def loaded(self):
         loadedMods = {}
         for moduleName, module in self.loadedComponents.items():
-            description = getattr(module, moduleName)().description()
+            description = getattr(module, moduleName)("1").description()
             loadedMods[moduleName] = description
 
         return  loadedMods
@@ -94,7 +94,7 @@ class Application(object):
                 instanceId = str(Application.instanceCounter)
             Application.instanceCounter += 1
 
-            c = getattr(self.loadedComponents[componentname], componentname)()
+            c = getattr(self.loadedComponents[componentname], componentname)(instanceId)
             for key, instance in (self.loaded_instances).items():
                 print(self.loaded_instances)
                 if x == instance[2] and y == instance[3]:
@@ -137,7 +137,7 @@ class Application(object):
             html_file.write("{%" + ' extends '+'"POPapp/templates/index.html" '+  "%}\n")
             html_file.write("{%" + " block content " + "%}\n")
             
-            d = div(cls="row panel panel-default")
+            d = div(cls="row panel panel-default", style="margin:auto; width:90%;")
 
             doms = []
             for i in range(0, self.maxRow):

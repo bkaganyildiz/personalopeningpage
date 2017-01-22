@@ -79,7 +79,6 @@ class Post(object):
                     data:  JSON.stringify({ 'key' : '""" + self.blog_id + """', 'content': $('#post_content').val()}),
                     contentType: 'application/json; charset=utf-8',
                     success: function (response) {
-                    alert(JSON.stringify(response));
                         $('#blog_"""+self.blog_id+"""').text(response['content']);
                     },
                     error: function (err){

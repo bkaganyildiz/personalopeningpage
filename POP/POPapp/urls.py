@@ -9,6 +9,7 @@ urlpatterns = [
 	url(r'^/callmethod$', views.call_method),
 	url(r'^/execute$', views.execute),
 	url(r'^/postblog$', views.postblog),
+	url(r'^/fetchcomic$', views.fetch_comic),
 	url(r'^/?$', views.index, name='index'),
 	url(r'background', views.setBackground),
 	url(r'edit', views.editProfile),
