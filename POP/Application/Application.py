@@ -137,7 +137,7 @@ class Application(object):
             html_file.write("{%" + ' extends '+'"POPapp/templates/index.html" '+  "%}\n")
             html_file.write("{%" + " block content " + "%}\n")
             
-            d = div()
+            d = div(cls="row panel panel-default")
 
             doms = []
             for i in range(0, self.maxRow):

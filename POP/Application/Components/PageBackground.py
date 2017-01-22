@@ -43,7 +43,7 @@ class PageBackground(object):
         self.imagePath = imagePath
 
     def printHTML(self):
-        image = img(src=self.imagePath)
+        image = img(src=(self.imagePath or "http://www.planwallpaper.com/static/images/518164-backgrounds.jpg"))
         #image['src'] = img(src=self.imagePath)"http://www.planwallpaper.com/static/images/518164-backgrounds.jpg"
         image['style'] = "width: 100%; height: auto; max-width: 100%;"
 

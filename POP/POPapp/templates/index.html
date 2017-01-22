@@ -3,150 +3,147 @@
 {% block index %}
 
 <div id="mainContainer" class="container">
-	<div class="row">
-		<div class="col-sm-6">
-			<div class="col-sm-12" style="border-style: solid; border-radius:10px; border-color:#0000ff;">
-				<h1 class="text-center">Components</h1>
-			</div>
-			<div class="col-sm-6">
-				<div class="col-sm-12" style="border-bottom: 2px solid #000000">
-					<h3 class="text-center">Available</h3>
-				</div>
+	<div class="row" style="display: flex;">
+		<div class="col-sm-3 panel panel-default" style="align-items: stretch;">
+			<h3 class="text-center" style="border-bottom: 2px solid #000000">Available Components</h3>
+			
+			<ul id="comp_available" class="list-group">
 				{% for component in available %}
-				<li class="text-center">{{ component }}</li>
+				{% if component in loaded %}
+				<li class="list-group-item list-group-item-success text-center">{{ component }}</li>
+				{% else %}
+				<li class="list-group-item text-center">{{ component }}</li>
+				{% endif %}
 				{% endfor %}
-			</div>
-			<div class="col-sm-6">
-				<div class="col-sm-12" style="border-bottom: 2px solid #000000">
-					<h3 class="text-center">Loaded</h3>
-				</div>
-				<div id="the_loaded">
-					{% for component in loaded %}
-					<li class="text-center">{{ component }}</li>
-					{% endfor %}
-				</div>
-			</div>
-			<div class="col-sm-12" align="right">
-				<div class="col-sm-6">
-					<button id="loadcomponent" name="load" class="btn btn-default rigth">Load Component</button>
-				</div>
-				<div class="col-sm-6">
-					<select id="component_name" name="componentName" class="form-control">
-					{% for component in available %}
-						<option value="{{ component }}">{{ component }}</option>
-					{% endfor %}
-					</select>
-				</div>
-			</div>
+			</ul>
+			
+			<select id="component_name" name="componentName" class="form-control">
+			{% for component in available %}
+				<option value="{{ component }}">{{ component }}</option>
+			{% endfor %}
+			</select>
+			
+			<button id="loadcomponent" name="load" class="btn btn-default center-block">Load Component</button>
+
 		</div>
-		<div class="col-sm-6">
-			<div class="col-sm-12" style="border-style: solid; border-radius:10px; border-color:#0000ff;">
-				<h1 class="text-center">Instances</h1>
-			</div>
-			<div class="col-sm-12" style="border-bottom: 2px solid #000000">
-				<h3 class="text-center">Loaded</h3>
-			</div>
-			<table class="table table-striped">
+
+		<div class="col-sm-6 panel panel-default" style="align-items: stretch;">
+			<h3 class="text-center" style="border-bottom: 2px solid #000000">Loaded Instances</h3>
+			
+			<table class="table table-striped table-fixed">
 				<thead>
 					<tr>
-						<th>Key</th>
-						<th>Component Name</th>
-						<th>X</th>
-						<th>Y</th>
-						<th>Delete</th>
+						<th class="col-xs-1">Key</th>
+						<th class="col-xs-8">Component Name</th>
+						<th class="col-xs-1">X</th>
+						<th class="col-xs-1">Y</th>
+						<th class="col-xs-1">Delete</th>
 					</tr>
 				</thead>
 				<tbody id="loaded_instances">
-					{% for instance1,instance2  in instances.items %}
-						<tr>
-							<td>{{ instance1   }}</td>
-							<td>{{ instance2.0 }}</td>
-							<td>{{ instance2.1 }}</td>
-							<td>{{ instance2.2 }}</td>
-							<td>
-								<button class="remove_instance" name="{{ instance1 }}">Delete</button>
-							</td>
-						</tr>
+					{% for key, instance  in instances.items %}
+					<tr>
+						<td class="col-xs-1">{{ key   }}</td>
+						<td class="col-xs-8">{{ instance.0 }}</td>
+						<td class="col-xs-1">{{ instance.1 }}</td>
+						<td class="col-xs-1">{{ instance.2 }}</td>
+						<td class="col-xs-1">
+							<button class="remove_instance" name="{{ key }}">Delete</button>
+						</td>
+					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
-			<div class="col-sm-3"></div>
-			<div class="col-sm-6" style="background-color: #99AABB">
-				<table class="table">
-					<tr>
-						<td class="text-right">Component Name: </td>
-						<td>
-							<select id="inst_comp_name" name="componentName">
-							{% for component in available %}
-								<option value="{{ component }}">{{ component }}</option>
-							{% endfor %}
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="text-right">X: </td>
-						<td>
-							<input id="inst_x" type="text" name="x" class="form-control">
-						</td>
-					</tr>
-					<tr>
-						<td class="text-right">Y: </td>
-						<td>
-							<input id="inst_y" type="text" name="y" class="form-control">
-						</td>
-					</tr>
-					<tr>
-						<td align="center" colspan="2">
-							<button id="add_instance" class="btn btn-default">Add Instance</button>	
-						</td>
-					</tr>
-				</table>
-			</div>
-			<div class="col-sm-3"></div>
-		</div>
-		<div class="col-sm-12">
-			<div class="col-sm-3">
-				<select id="cm_inst_keys" name="instance_keys" class="form-control">
-					{% for key in instances.keys %}
-					<option value="{{ key }}">{{ key }}</option>
-					{% endfor %}
-				</select>
-			</div>
-			<div class="col-sm-3">
-				<input id="cm_method_name" type="text" name="method_name" class="form-control">
-			</div>
-			<div class="col-sm-3">
-				<input id="cm_method_args" type="text" name="method_args" class="form-control">
-			</div>
-			<div class="col-sm-3">
-				<button id="call_method" class="btn btn-default">Call Method</button>	
-			</div>
-		</div>
-		<div class="col-sm-12">
-			<div class="col-sm-4"></div>
-			<div class="col-sm-4">
-				<form action="/{{ user.username }}" method="POST">
-					<button type="submit" class="btn btn-default btn-lg btn-block">Execute</button>
-				</form>
-			</div>
-			<div class="col-sm-4"></div>
-		</div>
-	</div>
 
-	<table>
-		<tr>
-			<td>
+		</div>
+		<div class="col-sm-3 panel panel-default" style="align-items: stretch;">
+			<h3 class="text-center" style="border-bottom: 2px solid #000000">Design</h3>
+			<div class="panel panel-default">
+				<h5 class="text-center">Load Design</h5>
 				<input id="image" type="file" class="" name="loadFile">
 				<input type="submit" name="load_des" value="Load Design">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="submit" name="save_des" value="Save Design">
-				<a href="{{des_url}}">{{des_url}}</a>
-			</td>
-		</tr>
-	</table>
+			</div>
+			<div class="panel panel-default">
+				<h5 class="text-center">Save Design</h5>
+				<input type="submit" name="load_des" value="Save Design">
+			</div>
+		</div>
+	</div>
+	<div class="row panel panel-default">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-4">
+			<table class="table">
+				<tr>
+					<td class="text-right">Component Name: </td>
+					<td>
+						<select id="inst_comp_name" name="componentName" class="form-control">
+						{% for component in loaded %}
+							<option value="{{ component }}">{{ component }}</option>
+						{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="text-right">X: </td>
+					<td>
+						<input id="inst_x" type="text" name="x" class="form-control">
+					</td>
+				</tr>
+				<tr>
+					<td class="text-right">Y: </td>
+					<td>
+						<input id="inst_y" type="text" name="y" class="form-control">
+					</td>
+				</tr>
+				<tr>
+					<td align="center" colspan="2">
+						<button id="add_instance" class="btn btn-default">Add Instance</button>	
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-sm-4">
+			<table class="table">
+				<tr>
+					<td class="text-right">Instance Key: </td>
+					<td>
+						<select id="cm_inst_keys" name="instance_keys" class="form-control">
+						{% for key in instances.keys %}
+						<option value="{{ key }}">{{ key }}</option>
+						{% endfor %}
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="text-right">Method Name: </td>
+					<td>
+						<input id="cm_method_name" type="text" name="method_name" class="form-control">
+					</td>
+				</tr>
+				<tr>
+					<td class="text-right">Arguments: </td>
+					<td>
+						<input id="cm_method_args" type="text" name="method_args" class="form-control">
+					</td>
+				</tr>
+				<tr>
+					<td align="center" colspan="2">
+						<button id="call_method" class="btn btn-default">Call Method</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-sm-2"></div>
+	</div>
+	<div class="row">
+		<div class="col-sm-4"></div>
+		<div class="col-sm-4">
+			<form action="/{{ user.username }}" method="POST">
+				<button type="submit" class="btn btn-default btn-lg btn-block">Execute</button>
+			</form>
+		</div>
+		<div class="col-sm-4"></div>
+	</div>
 </div>
 
 <script type="text/javascript">
@@ -161,9 +158,10 @@
 				contentType: "application/json; charset=utf-8",
 				success: function (response) {
 					var components = response['loaded_components'];
-					$('#the_loaded').html('');
+					$('#inst_comp_name').html('');
 					for (component in components) {
-						$("#the_loaded").append("<li class='text-center'>" + component + "</li>");
+						$('#comp_available>li:contains("' + component + '")').replaceWith('<li class="list-group-item list-group-item-success text-center">' + component + '</li>');
+						$('#inst_comp_name').append("<option value='" + component + "'>" + component + "</option>");
 					}
 				},
 				error: function (err){
