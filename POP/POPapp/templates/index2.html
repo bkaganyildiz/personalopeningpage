@@ -2,8 +2,8 @@
 {% block content %}
 <div class="row panel panel-default" style="margin:auto; width:90%;">
   <div align="center" class="grid" id="xkcd_2">
-    <h3 class="text-center">Voice Commands</h3>
-    <img src="http://imgs.xkcd.com/comics/voice_commands.png">
+    <h3 class="text-center">Phone Numbers</h3>
+    <img src="http://imgs.xkcd.com/comics/phone_numbers.png">
     <div>
       <div align="left" class="col-sm-6">
         <button class="btn btn-default" id="xkcd_prev">Prev</button>
@@ -14,8 +14,8 @@
     </div>
     <script>
                 $(document).ready(function fetch(){
-                    var latestComic = 1787;
-                    var currentComic = 1787;
+                    var latestComic = 1789;
+                    var currentComic = 1789;
                     $('#xkcd_2 #xkcd_prev').click(function () {
                         jQuery.ajax({
                             type: 'POST',
@@ -53,57 +53,6 @@
                 });
             </script>
   </div>
-  <div align="center" class="grid" id="xkcd_3">
-    <h3 class="text-center">Barge</h3>
-    <img src="http://imgs.xkcd.com/comics/barge.png">
-    <div>
-      <div align="left" class="col-sm-6">
-        <button class="btn btn-default" id="xkcd_prev">Prev</button>
-      </div>
-      <div align="right" class="col-sm-6">
-        <button class="btn btn-default" id="xkcd_next">Next</button>
-      </div>
-    </div>
-    <script>
-                $(document).ready(function fetch(){
-                    var latestComic = 1788;
-                    var currentComic = 1788;
-                    $('#xkcd_3 #xkcd_prev').click(function () {
-                        jQuery.ajax({
-                            type: 'POST',
-                            async: true,
-                            data:  JSON.stringify({ 'key' : '3', 'num': currentComic-1}),
-                            contentType: 'application/json; charset=utf-8',
-                            url: '/{{ user.username }}/fetchcomic',
-                            success: function (response) {
-                                $('#xkcd_3 h3').text(response['comic']['title']);
-                                $('#xkcd_3 img').attr('src', response['comic']['img']);
-                                currentComic--;
-                            },
-                            error: function (err){
-                                alert(err.responseText);
-                            }
-                        });
-                    });
-                    $('#xkcd_3 #xkcd_next').click(function () {
-                        jQuery.ajax({
-                            type: 'POST',
-                            async: true,
-                            data:  JSON.stringify({ 'key' : '3', 'num': currentComic+1}),
-                            contentType: 'application/json; charset=utf-8',
-                            url: '/{{ user.username }}/fetchcomic',
-                            success: function (response) {
-                                $('#xkcd_3 h3').text(response['comic']['title']);
-                                $('#xkcd_3 img').attr('src', response['comic']['img']);
-                                currentComic++;
-                            },
-                            error: function (err){
-                                alert(err.responseText);
-                            }
-                        });
-                    });
-                });
-            </script>
-  </div>
+  <div class="grid"></div>
 </div>
 {% endblock content %}

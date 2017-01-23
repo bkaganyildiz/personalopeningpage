@@ -9,6 +9,7 @@ from .choices import *
 from Application.Application import *
 import pickle
 import os
+from django.views.static import serve
 
 @csrf_exempt
 def deleteSession(request, username):
@@ -251,6 +252,51 @@ def fetch_comic(request, username):
             'status': False,
         })
 
+@csrf_exempt
+def load_design(request, username):
+    if request.session.has_key('username'):
+        username = request.session['username']
+        user = User.objects.get(username=username)
+
+        try:
+            appUser = ApplicationUser.objects.get(user=user)
+            app = pickle.loads(appUser.app)
+            if not request.session.has_key('application'):
+                request.session['application'] = appUser.app
+
+        except ApplicationUser.DoesNotExist:
+            app = Application()
+            appUser = ApplicationUser.objects.create(user=user, app=pickle.dumps(app))
+            request.session['application'] = appUser.app
+        
+        form = LoadDesignForm(request.POST , request.FILES)
+        if form.is_valid() :
+            loadFile = form.cleaned_data['loadFile']
+            app.loadDesign(loadFile)
+            request.session['application'] = pickle.dumps(app)
+            redirect("/" + username)
+
+@csrf_exempt
+def save_design(request, username):
+    if request.session.has_key('username'):
+        username = request.session['username']
+        user = User.objects.get(username=username)
+
+        try:
+            appUser = ApplicationUser.objects.get(user=user)
+            app = pickle.loads(appUser.app)
+            if not request.session.has_key('application'):
+                request.session['application'] = appUser.app
+
+        except ApplicationUser.DoesNotExist:
+            app = Application()
+            appUser = ApplicationUser.objects.create(user=user, app=pickle.dumps(app))
+            request.session['application'] = appUser.app
+    
+        app.saveDesign( "design.txt")
+        context['des_url'] = settings.BASE_DIR + "/design.txt"
+        redirect("/" + username)
+
 
 @csrf_exempt
 def index(request, username):
@@ -277,12 +323,28 @@ def index(request, username):
             'instances' : app.instances(),
         }
 
-        if request.method == 'POST' :
-            print "hello asdasda"
-            app.execute()
-            return render(request, "POPapp/templates/index2.html", context)
+        if request.method == 'POST':
+            if request.POST.has_key("execute"):
+                app.execute()
+                return render(request, "POPapp/templates/index2.html", context)
+            elif request.POST.has_key("load_des"):
+                form = LoadDesignForm(request.POST, request.FILES)
+                if form.is_valid() :
+                    loadFile = form.cleaned_data['loadFile']
+                    app.loadDesign(loadFile)
+                    context['loaded'] = app.loaded()
+                    context['instances'] = app.instances()
+                    request.session['application'] = pickle.dumps(app)
 
-        print "asdasdakwemkajskdjksadjs"   
+                    appUser.app = pickle.dumps(app)
+                    appUser.save()
+                    request.session['application'] = appUser.app
+            elif request.POST.has_key("save_des"):
+                app.saveDesign( "design.txt")
+                context['des_url'] = settings.BASE_DIR + "/design.txt"
+                filepath = context['des_url']
+                return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
+ 
         return render(request, "POPapp/templates/index.html", context)
 
         """

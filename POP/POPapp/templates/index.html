@@ -60,12 +60,16 @@
 			<h3 class="text-center" style="border-bottom: 2px solid #000000">Design</h3>
 			<div class="panel panel-default">
 				<h5 class="text-center">Load Design</h5>
-				<input id="image" type="file" class="" name="loadFile">
-				<input type="submit" name="load_des" value="Load Design">
+				<form action="/{{ user.username }}" method="POST" enctype="multipart/form-data">
+					<input type="file" name="loadFile">
+					<input type="submit" name="load_des" value="Load Design">
+				</form>
 			</div>
 			<div class="panel panel-default">
 				<h5 class="text-center">Save Design</h5>
-				<input type="submit" name="load_des" value="Save Design">
+				<form action="/{{ user.username }}" method="POST">
+					<input type="submit" name="save_des" value="Save Design">
+				</form>
 			</div>
 		</div>
 	</div>
@@ -139,7 +143,7 @@
 		<div class="col-sm-4"></div>
 		<div class="col-sm-4">
 			<form action="/{{ user.username }}" method="POST">
-				<button type="submit" class="btn btn-default btn-lg btn-block">Execute</button>
+				<button type="submit" name="execute" class="btn btn-default btn-lg btn-block">Execute</button>
 			</form>
 		</div>
 		<div class="col-sm-4"></div>
