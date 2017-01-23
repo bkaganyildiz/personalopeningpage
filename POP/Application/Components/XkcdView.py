@@ -62,7 +62,7 @@ class XkcdView(object):
                 $(document).ready(function fetch(){
                     var latestComic = """ + str(self.currentComic['num']) + """;
                     var currentComic = """ + str(self.currentComic['num']) + """;
-                    $('#xkcd_prev').click(function () {
+                    $('#xkcd_""" + self.instance_id + """ #xkcd_prev').click(function () {
                         jQuery.ajax({
                             type: 'POST',
                             async: true,
@@ -79,7 +79,7 @@ class XkcdView(object):
                             }
                         });
                     });
-                    $('#xkcd_next').click(function () {
+                    $('#xkcd_""" + self.instance_id + """ #xkcd_next').click(function () {
                         jQuery.ajax({
                             type: 'POST',
                             async: true,

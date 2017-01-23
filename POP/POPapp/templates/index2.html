@@ -1,51 +1,9 @@
 {% extends "POPapp/templates/index.html" %}
 {% block content %}
 <div class="row panel panel-default" style="margin:auto; width:90%;">
-  <div class="grid">
-    <h1>BLOG</h1>
-    <table>
-      <tr>
-        <td>1</td>
-        <td>2017-01-22 17:14:49</td>
-        <tr>
-          <td>
-            <p id="blog_1">merhaba ceren</p>
-          </td>
-        </tr>
-      </tr>
-    </table>
-  </div>
-  <div class="grid"></div>
-  <div class="grid">
-    <h1>POST</h1>
-    <div>
-      <textarea cols="50" id="post_content" rows="4"></textarea>
-      <button id="post_method" name="Post">POST</button>
-    </div>
-    <script>$('#post_method').click(function () {
-                jQuery.ajax({
-                    type: 'POST',
-                    async: true,
-                    url: '/{{ user.username }}/postblog',
-                    data:  JSON.stringify({ 'key' : '1', 'content': $('#post_content').val()}),
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (response) {
-                        $('#blog_1').text(response['content']);
-                    },
-                    error: function (err){
-                        alert(err.responseText);
-                    }
-                });
-            });</script>
-  </div>
-  <div class="grid"></div>
-  <div background-color="#000000" class="grid">
-    <img src="https://static.pexels.com/photos/126590/pexels-photo-126590.jpeg" style="width: 100%; height: auto; max-width: 100%;">
-  </div>
-  <div class="grid"></div>
-  <div align="center" class="grid" id="xkcd_3">
-    <h3 class="text-center">Trash</h3>
-    <img src="http://imgs.xkcd.com/comics/trash.png">
+  <div align="center" class="grid" id="xkcd_2">
+    <h3 class="text-center">Voice Commands</h3>
+    <img src="http://imgs.xkcd.com/comics/voice_commands.png">
     <div>
       <div align="left" class="col-sm-6">
         <button class="btn btn-default" id="xkcd_prev">Prev</button>
@@ -56,9 +14,61 @@
     </div>
     <script>
                 $(document).ready(function fetch(){
-                    var latestComic = 1786;
-                    var currentComic = 1786;
-                    $('#xkcd_prev').click(function () {
+                    var latestComic = 1787;
+                    var currentComic = 1787;
+                    $('#xkcd_2 #xkcd_prev').click(function () {
+                        jQuery.ajax({
+                            type: 'POST',
+                            async: true,
+                            data:  JSON.stringify({ 'key' : '2', 'num': currentComic-1}),
+                            contentType: 'application/json; charset=utf-8',
+                            url: '/{{ user.username }}/fetchcomic',
+                            success: function (response) {
+                                $('#xkcd_2 h3').text(response['comic']['title']);
+                                $('#xkcd_2 img').attr('src', response['comic']['img']);
+                                currentComic--;
+                            },
+                            error: function (err){
+                                alert(err.responseText);
+                            }
+                        });
+                    });
+                    $('#xkcd_2 #xkcd_next').click(function () {
+                        jQuery.ajax({
+                            type: 'POST',
+                            async: true,
+                            data:  JSON.stringify({ 'key' : '2', 'num': currentComic+1}),
+                            contentType: 'application/json; charset=utf-8',
+                            url: '/{{ user.username }}/fetchcomic',
+                            success: function (response) {
+                                $('#xkcd_2 h3').text(response['comic']['title']);
+                                $('#xkcd_2 img').attr('src', response['comic']['img']);
+                                currentComic++;
+                            },
+                            error: function (err){
+                                alert(err.responseText);
+                            }
+                        });
+                    });
+                });
+            </script>
+  </div>
+  <div align="center" class="grid" id="xkcd_3">
+    <h3 class="text-center">Barge</h3>
+    <img src="http://imgs.xkcd.com/comics/barge.png">
+    <div>
+      <div align="left" class="col-sm-6">
+        <button class="btn btn-default" id="xkcd_prev">Prev</button>
+      </div>
+      <div align="right" class="col-sm-6">
+        <button class="btn btn-default" id="xkcd_next">Next</button>
+      </div>
+    </div>
+    <script>
+                $(document).ready(function fetch(){
+                    var latestComic = 1788;
+                    var currentComic = 1788;
+                    $('#xkcd_3 #xkcd_prev').click(function () {
                         jQuery.ajax({
                             type: 'POST',
                             async: true,
@@ -75,7 +85,7 @@
                             }
                         });
                     });
-                    $('#xkcd_next').click(function () {
+                    $('#xkcd_3 #xkcd_next').click(function () {
                         jQuery.ajax({
                             type: 'POST',
                             async: true,
@@ -95,7 +105,5 @@
                 });
             </script>
   </div>
-  <div class="grid"></div>
-  <div class="grid"></div>
 </div>
 {% endblock content %}
